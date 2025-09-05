@@ -38,7 +38,7 @@ export default async (req, context) => {
     // ---- Env & subject ----
     const siteName = process.env.SITE_NAME || "顧客滿意度調查";
     const toEmail  = process.env.TO_EMAIL;
-    const fromEmail= process.env.FROM_EMAIL;
+    const fromEmail= process.env.FROM_EMAIL_;
     const apiKey   = process.env.BREVO_API_KEY;
 
     if (!apiKey || !toEmail || !fromEmail) {
