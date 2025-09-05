@@ -1,0 +1,9 @@
+[functions]
+  node_bundler = "esbuild"
+  directory = "netlify/functions"
+
+# Optional pretty alias, so you can call /api/submit from the front-end
+[[redirects]]
+  from = "/api/submit"
+  to = "/.netlify/functions/submit"
+  status = 200
