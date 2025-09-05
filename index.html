@@ -4,8 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>問卷表單</title>
-  <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-bottom: 15px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
     /* Loading backdrop */
     #loadingBackdrop {
       position: fixed;
@@ -29,9 +69,14 @@
   <div class="container">
     <h1>問卷表單</h1>
     <form id="surveyForm" action="/api/submit" method="POST">
-      <!-- 你的表單內容 -->
-      <label>姓名：<input type="text" name="name" required></label><br>
-      <label>Email：<input type="email" name="email" required></label><br>
+      <label>
+        姓名：
+        <input type="text" name="name" required>
+      </label>
+      <label>
+        Email：
+        <input type="email" name="email" required>
+      </label>
       <button type="submit">送出</button>
     </form>
   </div>
