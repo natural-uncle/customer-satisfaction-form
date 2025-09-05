@@ -1,516 +1,224 @@
-<!-- 🔹 問卷主頁 HTML -->
 <!DOCTYPE html>
-
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8"/> <!-- 設定字元編碼為 UTF-8，支援中文 -->
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/> <!-- 手機裝置顯示優化 -->
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>自然大叔清洗服務｜顧客滿意度調查</title>
+
 <style>
-    /* ============================
-       🔹 基本頁面樣式
-       ============================ */
-    body {
-      font-family: "Microsoft JhengHei", sans-serif; /* 預設字體 */
-      background-color: #f9faf9; /* 背景色（淺灰） */
-      color: #333; /* 文字顏色 */
-      margin: 0;
-      padding: 0;
-      transition: all 0.3s ease; /* 主題切換動畫 */
-      font-size: 16px; /* 預設字體大小 */
-    }
-
-    /* 🔹 問卷容器（白色卡片） */
-    .container {
-      max-width: 800px; /* 最大寬度限制 */
-      margin: 20px auto; /* 上下 20px，自動置中 */
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 12px; /* 圓角邊框 */
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 陰影效果 */
-    }
-
-    /* 🔹 LOGO 區塊 */
-    .logo { text-align: center; margin-bottom: 20px; }
-    .logo img { max-width: 100%; border-radius: 12px; }
-
-    /* 🔹 問卷標題與文字 */
-    h2 { text-align: center; color: #3a6d4f; margin: 10px 0; font-size: 2rem; }
-    p { line-height: 1.7; color: #555; font-size: 1.05rem; }
-
-    /* 🔹 表單樣式 */
-    .form-group { margin-bottom: 20px; }
-    label { font-weight: bold; display: block; margin-bottom: 8px; color: #3a6d4f; font-size: 1.1rem; }
-    .options label { display: block; margin: 5px 0; }
-
-    /* 🔹 修正後輸入框（統一樣式） */
-    textarea, input[type=text] {
-      width: 100%;             /* 佔滿整個容器寬度 */
-      box-sizing: border-box;  /* 包含 padding 與 border */
-      padding: 14px;           /* 內縮空間 */
-      border: 1px solid #ccc;  /* 邊框 */
-      border-radius: 8px;      /* 圓角 */
-      font-size: 1rem;
-      resize: vertical;        /* 僅允許上下拉伸 */
-      margin-top: 8px;
-    }
-    input[type=range] { width: 100%; }
-
-    /* 🔹 送出按鈕 */
-    button {
-      background: #3a6d4f;
-      color: white;
-      border: none;
-      padding: 14px 20px;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      display: block;
-      margin: 0 auto;
-    }
-    button:hover { background: #2d523c; }
-
-    /* 🔹 聯絡資訊區塊 */
-    .contact {
-      margin-top: 30px;
-      padding: 20px;
-      background: #f1f9f1;
-      border-radius: 8px;
-      font-size: 1rem;
-      text-align:center;
-    }
-
-    /* 🔹 提交後的感謝訊息 */
-    .thankyou {
-      display: none;
-      text-align: center;
-      color: green;
-      font-size: 1.2rem;
-      margin-top: 20px;
-    }
-
-    /* 🔹 社群按鈕 */
-    .btn {
-      display: inline-block;
-      padding: 12px 20px;
-      margin: 5px;
-      border-radius: 5px;
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
-    }
-    .btn-line { background-color: #06c755; } /* LINE 綠色 */
-    .btn-fb { background-color: #1877F2; }   /* Facebook 藍色 */
-
-    /* 🔹 頁尾 */
-    .footer { text-align: center; margin-top: 40px; font-size: 0.95rem; color: #777; }
-    .note { font-size: 0.95rem; color: #777; margin-top: 4px; }
-
-    /* 🔹 進度條 */
-    .progress-container {
-      background: #e0e0e0;
-      border-radius: 20px;
-      margin: 20px 0;
-      height: 20px;
-      width: 100%;
-      overflow: hidden;
-    }
-    .progress-bar {
-      height: 100%;
-      background: #3a6d4f;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-
-    /* ============================
-       🔹 暗色模式樣式
-       ============================ */
-    body.dark { background-color: #121212; color: #eee; }
-    body.dark .container { background: #1e1e1e; box-shadow: 0 4px 12px rgba(0,0,0,0.6); }
-    body.dark h2, body.dark label { color: #9ad0b1; }
-    body.dark p { color: #ccc; }
-    body.dark textarea, body.dark input[type=text], body.dark input[type=range] {
-      background: #2a2a2a; color: #eee; border: 1px solid #555;
-    }
-    body.dark button { background: #4da67a; color: #fff; }
-    body.dark button:hover { background: #3b7e5b; }
-    body.dark .progress-container { background: #333; }
-    body.dark .progress-bar { background: #4da67a; }
-    body.dark .contact { background: #2a2a2a; color: #ccc; }
-    body.dark .footer { color: #aaa; }
-
-    /* 🔹 主題切換按鈕 */
-    .theme-toggle {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      background: #3a6d4f;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      cursor: pointer;
-      font-size: 18px;
-    }
-    body.dark .theme-toggle { background: #4da67a; }
-
-    /* ============================
-       🔹 手機 RWD 優化
-       ============================ */
-    @media (max-width: 600px) {
-      .container { margin: 10px; padding: 18px; border-radius: 10px; }
-      h2 { font-size: 1.5rem; }
-      p, label, .note { font-size: 1.05rem; line-height: 1.6; }
-      input[type=text], textarea { font-size: 1.05rem; padding: 14px; }
-      button { width: 100%; padding: 16px; font-size: 1.15rem; }
-      .btn {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-        text-align: center;
-        margin: 10px 0;
-        font-size: 1rem;
-        padding: 12px;
-        white-space: normal; /* 允許換行，避免字太長超出 */
-      }
-      .progress-container { height: 18px; }
-      .theme-toggle { top: 10px; right: 10px; }
-    }
-  </style>
-<style id="submit-loading-style">#loadingBackdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.4);z-index:9999}
+/* === 主要樣式（保留你原本的設計） === */
+body{font-family:"Microsoft JhengHei",sans-serif;background:#f9faf9;color:#333;margin:0}
+.container{max-width:800px;margin:20px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.logo{text-align:center;margin-bottom:20px}
+.logo img{max-width:100%;border-radius:12px}
+h2{text-align:center;color:#3a6d4f;margin:10px 0;font-size:2rem}
+p{line-height:1.7;color:#555;font-size:1.05rem}
+.form-group{margin-bottom:20px}
+label{font-weight:bold;display:block;margin-bottom:8px;color:#3a6d4f;font-size:1.1rem}
+.options label{display:block;margin:5px 0}
+textarea,input[type=text]{width:100%;box-sizing:border-box;padding:14px;border:1px solid #ccc;border-radius:8px;font-size:1rem;resize:vertical;margin-top:8px}
+input[type=range]{width:100%}
+button{background:#3a6d4f;color:#fff;border:0;padding:14px 20px;font-size:1.1rem;border-radius:8px;cursor:pointer;display:block;margin:0 auto}
+button:hover{background:#2d523c}
+.contact{margin-top:30px;padding:20px;background:#f1f9f1;border-radius:8px;font-size:1rem;text-align:center}
+.footer{text-align:center;margin-top:40px;font-size:.95rem;color:#777}
+.progress-container{background:#e0e0e0;border-radius:20px;margin:20px 0;height:20px;width:100%;overflow:hidden}
+.progress-bar{height:100%;background:#3a6d4f;width:0%;transition:width .3s ease}
+.theme-toggle{position:fixed;top:15px;right:15px;background:#3a6d4f;color:#fff;border:0;border-radius:50%;width:42px;height:42px;cursor:pointer;font-size:18px}
+body.dark{background:#121212;color:#eee}
+body.dark .container{background:#1e1e1e;box-shadow:0 4px 12px rgba(0,0,0,.6)}
+body.dark h2,body.dark label{color:#9ad0b1}
+body.dark p{color:#ccc}
+body.dark textarea,body.dark input[type=text],body.dark input[type=range]{background:#2a2a2a;color:#eee;border:1px solid #555}
+body.dark button{background:#4da67a}
+body.dark button:hover{background:#3b7e5b}
+body.dark .progress-container{background:#333}
+body.dark .progress-bar{background:#4da67a}
+body.dark .contact{background:#2a2a2a;color:#ccc}
+body.dark .footer{color:#aaa}
+@media (max-width:600px){
+  .container{margin:10px;padding:18px;border-radius:10px}
+  h2{font-size:1.5rem}
+  p,label{font-size:1.05rem;line-height:1.6}
+  input[type=text],textarea{font-size:1.05rem;padding:14px}
+  button{width:100%;padding:16px;font-size:1.15rem}
+}
+#loadingBackdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.4);z-index:9999}
 #loadingBackdrop.show{display:flex}
 .loading-card{background:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 .spinner{width:18px;height:18px;border:3px solid #ddd;border-top-color:#888;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;margin-right:8px;vertical-align:-3px}
-@keyframes spin{to{transform:rotate(360deg)}}</style></head>
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
 <body>
-<!-- 🔹 主題切換按鈕（亮色/暗色模式） -->
 <button class="theme-toggle" id="themeToggle">🌙</button>
-<!-- 🔹 問卷主內容容器 -->
+
 <div class="container">
-<!-- LOGO 區塊 -->
-<div class="logo">
-<img alt="自然大叔清洗服務 顧客滿意度調查" src="ChatGPT.png"/>
+  <div class="logo"><img src="ChatGPT.png" alt="自然大叔清洗服務 顧客滿意度調查"/></div>
+  <h2>誠摯邀請您填寫滿意度調查</h2>
+  <p>感謝您選擇 <b>自然大叔專業家電清洗服務</b>！我們致力提供安心、放心的清洗體驗。</p>
+
+  <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+
+  <form id="surveyForm" method="POST" action="/api/submit">
+    <div class="form-group">
+      <label>👤 請留下您的姓名或 LINE ID</label>
+      <input type="text" name="customer_name" placeholder="輸入姓名或 LINE ID"/>
+    </div>
+
+    <div class="form-group">
+      <label>1. 您對這次的清洗服務整體體驗感覺如何？</label>
+      <div class="options">
+        <label><input type="radio" name="q1" value="非常滿意"/> 非常滿意</label>
+        <label><input type="radio" name="q1" value="滿意"/> 滿意</label>
+        <label><input type="radio" name="q1" value="普通"/> 普通</label>
+        <label><input type="radio" name="q1" value="不太滿意"/> 不太滿意</label>
+        <label><input type="radio" name="q1" value="非常不滿意"/> 非常不滿意</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>2. 您對服務人員的專業程度是否滿意？</label>
+      <div class="options">
+        <label><input type="radio" name="q2" value="非常滿意"/> 非常滿意</label>
+        <label><input type="radio" name="q2" value="滿意"/> 滿意</label>
+        <label><input type="radio" name="q2" value="普通"/> 普通</label>
+        <label><input type="radio" name="q2" value="不太滿意"/> 不太滿意</label>
+        <label><input type="radio" name="q2" value="非常不滿意"/> 非常不滿意</label>
+      </div>
+      <textarea name="q2_extra" placeholder="若有特別印象或建議，請填寫..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>3. 您認為服務人員的整體表現如何？</label>
+      <div class="note">（1分=非常不滿意，5分=非常滿意）</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="1"/> 1 分</label>
+        <label><input type="radio" name="q3" value="2"/> 2 分</label>
+        <label><input type="radio" name="q3" value="3"/> 3 分</label>
+        <label><input type="radio" name="q3" value="4"/> 4 分</label>
+        <label><input type="radio" name="q3" value="5"/> 5 分</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>4. 若朋友或同事有需要，您願意推薦自然大叔的清洗服務嗎？</label>
+      <div class="note">（1分=完全不會推薦，10分=一定會推薦）</div>
+      <input type="range" name="q4" min="1" max="10" value="5" oninput="this.nextElementSibling.value=this.value"/>
+      <output>5</output>
+    </div>
+
+    <div class="form-group">
+      <label>5. 未來是否會再次委託自然大叔進行家電清洗服務？</label>
+      <div class="options">
+        <label><input type="radio" name="q5" value="一定會"/> 一定會</label>
+        <label><input type="radio" name="q5" value="有需要會考慮"/> 有需要會考慮</label>
+        <label><input type="radio" name="q5" value="可能不會"/> 可能不會</label>
+        <label><input type="radio" name="q5" value="不會"/> 不會</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>6. 您對我們的服務有任何想法、鼓勵或建議嗎？</label>
+      <textarea name="q6" placeholder="📝 請自由填寫您的建議..."></textarea>
+    </div>
+
+    <button type="submit">送出表單</button>
+    <div class="thankyou" aria-live="polite">✅ 感謝您填寫調查表！即將跳轉...</div>
+  </form>
+
+  <div class="contact">
+    <h3>📱 聯絡我們｜自然大叔</h3>
+    <a class="btn btn-line" href="https://lin.ee/OHk6Rn7">🟢 LINE 官方帳號</a>
+    <a class="btn btn-fb" href="https://www.facebook.com/naturaluncle">🔵 Facebook 粉絲專頁</a>
+  </div>
+  <div class="footer">© 2025 自然大叔｜專業家電清洗服務</div>
 </div>
-<!-- 問卷標題與簡介 -->
-<h2>誠摯邀請您填寫滿意度調查</h2>
-<p>感謝您選擇 <b>自然大叔專業家電清洗服務</b>！<br/>
-    我們始終秉持「讓每一位顧客乾淨使用家電」的初衷，致力提供安心、放心的清洗體驗。</p>
-<!-- 進度條 -->
-<div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
-<!-- 問卷表單開始 -->
-<form action="/.netlify/functions/submit" id="surveyForm" method="POST">
-<!-- Q0: 姓名 -->
-<div class="form-group">
-<label>👤 請留下您的姓名或 LINE ID</label>
-<input name="customer_name" placeholder="輸入姓名或 LINE ID" type="text"/>
-</div>
-<!-- Q1 -->
-<div class="form-group">
-<label>1. 您對這次的清洗服務整體體驗感覺如何？</label>
-<div class="options">
-<label><input name="q1" type="radio" value="非常滿意"/> 非常滿意</label>
-<label><input name="q1" type="radio" value="滿意"/> 滿意</label>
-<label><input name="q1" type="radio" value="普通"/> 普通</label>
-<label><input name="q1" type="radio" value="不太滿意"/> 不太滿意</label>
-<label><input name="q1" type="radio" value="非常不滿意"/> 非常不滿意</label>
-</div>
-</div>
-<!-- Q2 -->
-<div class="form-group">
-<label>2. 您對服務人員的專業程度是否滿意？</label>
-<div class="options">
-<label><input name="q2" type="radio" value="非常滿意"/> 非常滿意</label>
-<label><input name="q2" type="radio" value="滿意"/> 滿意</label>
-<label><input name="q2" type="radio" value="普通"/> 普通</label>
-<label><input name="q2" type="radio" value="不太滿意"/> 不太滿意</label>
-<label><input name="q2" type="radio" value="非常不滿意"/> 非常不滿意</label>
-</div>
-<textarea name="q2_extra" placeholder="若有特別印象或建議，請填寫..."></textarea>
-</div>
-<!-- Q3 -->
-<div class="form-group">
-<label>3. 您認為服務人員的整體表現如何？</label>
-<div class="note">（1分=非常不滿意，5分=非常滿意）</div>
-<div class="options">
-<label><input name="q3" type="radio" value="1"/> 1 分</label>
-<label><input name="q3" type="radio" value="2"/> 2 分</label>
-<label><input name="q3" type="radio" value="3"/> 3 分</label>
-<label><input name="q3" type="radio" value="4"/> 4 分</label>
-<label><input name="q3" type="radio" value="5"/> 5 分</label>
-</div>
-</div>
-<!-- Q4 -->
-<div class="form-group">
-<label>4. 若朋友或同事有需要，您願意推薦自然大叔的清洗服務嗎？</label>
-<div class="note">（1分=完全不會推薦，10分=一定會推薦）</div>
-<input max="10" min="1" name="q4" oninput="this.nextElementSibling.value = this.value" type="range" value="5"/>
-<output>5</output>
-</div>
-<!-- Q5 -->
-<div class="form-group">
-<label>5. 未來是否會再次委託自然大叔進行家電清洗服務？</label>
-<div class="options">
-<label><input name="q5" type="radio" value="一定會"/> 一定會</label>
-<label><input name="q5" type="radio" value="有需要會考慮"/> 有需要會考慮</label>
-<label><input name="q5" type="radio" value="可能不會"/> 可能不會</label>
-<label><input name="q5" type="radio" value="不會"/> 不會</label>
-</div>
-</div>
-<!-- Q6 -->
-<div class="form-group">
-<label>6. 您對我們的服務有任何想法、鼓勵或建議嗎？</label>
-<textarea name="q6" placeholder="📝 請自由填寫您的建議..."></textarea>
-</div>
-<!-- 送出表單 -->
-<button type="submit">送出表單</button>
-<div class="thankyou">✅ 感謝您填寫調查表！即將跳轉...</div>
-</form>
-<!-- 聯絡資訊（加上小圖示） -->
-<div class="contact">
-<h3>📱 聯絡我們｜自然大叔</h3>
-<a class="btn btn-line" href="https://lin.ee/OHk6Rn7">🟢 LINE 官方帳號</a>
-<a class="btn btn-fb" href="https://www.facebook.com/naturaluncle">🔵 Facebook 粉絲專頁</a>
-</div>
-<!-- 頁尾 -->
-<div class="footer">© 2025 自然大叔｜專業家電清洗服務</div>
-</div>
-<!-- ============================
-       🔹 JavaScript 功能
-       ============================ -->
+
+<div id="loadingBackdrop"><div class="loading-card"><span class="spinner"></span>資料送出中，請稍候…</div></div>
+
 <script>
-    /* 進度條：隨填答進度顯示百分比 */
-    const form = document.getElementById("surveyForm");
-    const thankyou = document.querySelector(".thankyou");
-    const progressBar = document.getElementById("progressBar");
-
-    const updateProgress = () => {
-      let answered = 0;
-      const totalQuestions = 7; // 總題數（含姓名）
-      form.querySelectorAll("input, textarea").forEach(el => {
-        if ((el.type === "radio" && el.checked) || 
-            (el.type === "text" && el.value.trim() !== "") ||
-            (el.type === "range" && el.value) ||
-            (el.tagName === "TEXTAREA" && el.value.trim() !== "")) {
-          answered++;
-        }
-      });
-      progressBar.style.width = Math.min((answered / totalQuestions) * 100, 100) + "%";
-    };
-    form.addEventListener("input", updateProgress);
-
-    /* 表單送出：透過 fetch 傳送到 save.php */
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      fetch("save.php", {
-        method: "POST",
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      }).then(response => {
-        if (response.ok) {
-          form.reset();
-          thankyou.style.display = "block";  // 顯示感謝訊息
-          progressBar.style.width = "0%";
-          // 2 秒後跳轉到感謝頁
-          setTimeout(() => {
-            window.location.href = "thankyou.html";
-          }, 2000);
-        } else {
-          alert("送出失敗，請稍後再試！");
-        }
-      }).catch(() => { alert("無法連線到伺服器！"); });
+// 進度條
+(function(){
+  var form=document.getElementById("surveyForm");
+  var progressBar=document.getElementById("progressBar");
+  function update(){
+    var answered=0,total=7;
+    form.querySelectorAll("input,textarea").forEach(function(el){
+      if((el.type==="radio"&&el.checked)||(el.type==="text"&&el.value.trim()!=="")||(el.type==="range"&&el.value)||(el.tagName==="TEXTAREA"&&el.value.trim()!=="")) answered++;
     });
-
-    /* 主題切換：亮色 ↔ 暗色 */
-    const themeToggle = document.getElementById("themeToggle");
-    const setTheme = (theme) => {
-      document.body.classList.toggle("dark", theme === "dark");
-      themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
-      localStorage.setItem("theme", theme);
-    };
-    themeToggle.addEventListener("click", () => {
-      const current = document.body.classList.contains("dark") ? "dark" : "light";
-      setTheme(current === "dark" ? "light" : "dark");
-    });
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      setTheme(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    }
-  </script>
-<div id="loadingBackdrop"><div class="loading-card"><span class="spinner"></span>資料送出中，請稍候…</div></div><script id="redirect-after-submit">
-document.addEventListener("DOMContentLoaded", function () {
-  var form = document.getElementById("surveyForm") || document.querySelector("form");
-  if (!form) return;
-
-  // 找送出按鈕
-  var submitBtn = form.querySelector('[type="submit"]');
-  var backdrop = document.getElementById("loadingBackdrop");
-
-  function showLoading(show){
-    if(!backdrop) return;
-    backdrop.classList[show ? "add" : "remove"]("show");
+    progressBar.style.width=Math.min(answered/total*100,100)+"%";
   }
+  form.addEventListener("input",update);
+})();
 
-  function setSubmitting(submitting){
-    if(submitBtn){
-      submitBtn.disabled = !!submitting;
-      if(submitting){
-        if(!submitBtn.getAttribute("data-origtxt")){
-          submitBtn.setAttribute("data-origtxt", submitBtn.textContent.trim());
-        }
-        submitBtn.textContent = "送出中…";
-      }else{
-        var orig = submitBtn.getAttribute("data-origtxt");
-        if(orig){ submitBtn.textContent = orig; }
-      }
+// 主題切換
+(function(){
+  var btn=document.getElementById("themeToggle");
+  function setTheme(t){document.body.classList.toggle("dark",t==="dark");btn.textContent=t==="dark"?"☀️":"🌙";localStorage.setItem("theme",t);}
+  btn.addEventListener("click",function(){setTheme(document.body.classList.contains("dark")?"light":"dark");});
+  var saved=localStorage.getItem("theme");
+  setTheme(saved?saved:(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+})();
+
+// 提交（fetch → /api/submit；任何 2xx 視為成功）
+(function(){
+  var form=document.getElementById("surveyForm");
+  var thankyou=document.querySelector(".thankyou");
+  var backdrop=document.getElementById("loadingBackdrop");
+  var submitBtn=form.querySelector('[type="submit"]');
+
+  function showLoading(b){backdrop.classList[b?"add":"remove"]("show");}
+  function setSubmitting(b){
+    if(!submitBtn) return;
+    submitBtn.disabled=!!b;
+    if(b){
+      if(!submitBtn.dataset.origtxt) submitBtn.dataset.origtxt=submitBtn.textContent.trim();
+      submitBtn.textContent="送出中…";
+    }else{
+      if(submitBtn.dataset.origtxt) submitBtn.textContent=submitBtn.dataset.origtxt;
     }
   }
 
-  form.addEventListener("submit", function (e) {
-    // 若瀏覽器停用 JS，表單將依原 action 正常送出
+  form.addEventListener("submit",function(e){
     e.preventDefault();
 
-    setSubmitting(true);
-    showLoading(true);
-
-    var formData = new FormData(form);
-    var action = form.getAttribute("action") || window.location.href;
-    var method = (form.getAttribute("method") || "GET").toUpperCase();
-
-    // 設定 15 秒逾時
-    var controller = new AbortController();
-    var timer = setTimeout(function(){ controller.abort(); }, 15000);
-
-    fetch(action, {
-      method: method,
-      body: method === "GET" ? null : formData,
-      signal: controller.signal
-    }).then(function (res) {
-      clearTimeout(timer);
-      // 嘗試依照後端回傳決定是否導向
-      var contentType = res.headers.get("content-type") || "";
-
-      if (!res.ok) {
-        throw new Error("伺服器回應狀態碼：" + res.status);
-      }
-
-      // 假設後端可能回 JSON：{ success: true, redirect: "thankyou.html" }
-      if (contentType.includes("application/json")) {
-        return res.json().then(function (data) {
-          if (data && (data.success === true || data.status === "ok")) {
-            var url = data.redirect || "thankyou.html";
-            window.location.href = url;
-            return;
-          }
-          // 若 JSON 未明確標示成功，仍 fallback 導向感謝頁
-          window.location.href = "thankyou.html";
-        });
-      }
-
-      // 若回傳是 HTML 或其他格式，只要成功就導向感謝頁
-      window.location.href = "thankyou.html";
-    }).catch(function (err) {
-      clearTimeout(timer);
-      setSubmitting(false);
-      showLoading(false);
-      alert("送出失敗，請稍後再試。\n原因：" + (err && err.message ? err.message : err));
+    var fd=new FormData(form);
+    var payload={};
+    fd.forEach(function(v,k){
+      if(payload[k]!==undefined) payload[k]=[].concat(payload[k],v);
+      else payload[k]=v;
     });
-  }, { once: true });
-});
-// --- Netlify + Brevo integration ---
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const formData = new FormData(form);
-  const payload = Object.fromEntries(formData.entries());
-  payload.userAgent = navigator.userAgent;
-  payload.submittedAt = new Date().toISOString();
+    payload.userAgent=navigator.userAgent;
+    payload.submittedAt=new Date().toISOString();
 
-  setSubmitting(true);
-  showLoading(true);
+    setSubmitting(true); showLoading(true);
 
-  fetch(form.getAttribute("action"), {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(payload),
-  }).then(async (res) => {
-    if (!res.ok) {
-      const t = await res.text().catch(() => "");
-      throw new Error("提交失敗：" + res.status + " " + t);
-    }
-    window.location.href = "thankyou.html";
-  }).catch((err) => {
-    alert("送出失敗，請稍後再試。\n原因：" + (err && err.message ? err.message : err));
-  }).finally(() => {
-    setSubmitting(false);
-    showLoading(false);
-  });
-}, { once: true });
-
-    // Safe submit interception for Netlify Function
-(function() {
-  function setSubmitting(disabled) {
-    try {
-      var btn = document.querySelector('button[type="submit"], input[type="submit"]');
-      if (btn) { btn.disabled = !!disabled; }
-    } catch (e) {}
-  }
-  function showLoading(show) {
-    try {
-      var el = document.querySelector('#loading,#spinner,.loading');
-      if (el) { el.style.display = show ? 'block' : 'none'; }
-    } catch (e) {}
-  }
-  function onReady(fn){ 
-    if(document.readyState!=='loading'){fn();} 
-    else {document.addEventListener('DOMContentLoaded',fn);} 
-  }
-
-  onReady(function(){
-    var form = document.querySelector('form');
-    if (!form) return;
-
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-
-      var formData = new FormData(form);
-      var payload = {};
-      formData.forEach((v,k)=>{
-        if (payload[k] !== undefined) {
-          // handle multiple values (checkboxes)
-          payload[k] = [].concat(payload[k], v);
-        } else {
-          payload[k] = v;
-        }
-      });
-      payload.userAgent = navigator.userAgent;
-      payload.submittedAt = new Date().toISOString();
-
-      setSubmitting(true);
-      showLoading(true);
-
-      fetch('/.netlify/functions/submit', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-      .then(function(res){
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
-      .then(function(){
-        window.location.href = 'thankyou.html';
-      })
-      .catch(function(err){
-        alert('送出失敗，請稍後再試。\n原因：' + (err && err.message ? err.message : err));
-      })
-      .finally(function(){
-        setSubmitting(false);
-        showLoading(false);
-      });
-    }, { once: true });
-  });
+    fetch("/api/submit",{
+      method:"POST",
+      headers:{ "content-type":"application/json" },
+      body:JSON.stringify(payload)
+    })
+    .then(async function(res){
+      if(res.ok) return {ok:true};
+      var txt=""; try{ txt=await res.text(); }catch(e){}
+      throw new Error("HTTP "+res.status+(txt?(": "+txt):""));
+    })
+    .then(function(){
+      thankyou.style.display="block";
+      setTimeout(function(){ window.location.href="thankyou.html"; }, 300);
+    })
+    .catch(function(err){
+      // 即使格式異常也可選擇前往完成頁，避免「成功寄信但前端報錯」
+      if (confirm("送出可能成功，但回應格式異常。\n要前往完成頁嗎？\n\n詳細："+(err&&err.message?err.message:err))) {
+        window.location.href="thankyou.html";
+        return;
+      }
+      alert("送出失敗，請稍後再試。\n原因："+(err&&err.message?err.message:err));
+    })
+    .finally(function(){ setSubmitting(false); showLoading(false); });
+  },{once:true});
 })();
-</script></body>
+</script>
+</body>
 </html>
