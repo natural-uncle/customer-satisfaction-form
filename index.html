@@ -48,7 +48,7 @@
     .btn-fb:hover{transform:translateY(-1px);filter:brightness(1.02)}
     .btn .label{letter-spacing:.2px;font-size:.95rem}
 
-    /* 行動裝置調整 */
+    /* === 行動裝置調整 === */
     @media (max-width:600px){
       .container{margin:10px;padding:18px;border-radius:10px}
       h2{font-size:1.5rem}
@@ -56,9 +56,9 @@
       input[type=text],textarea{font-size:1.05rem;padding:14px}
       button{width:100%;padding:16px;font-size:1.15rem}
 
-      /* 社群按鈕手機版調整：垂直堆疊，滿版但不超出容器 */
+      /* 社群按鈕手機版：滿版不超出容器 */
       .social-buttons{flex-direction:column;align-items:stretch;gap:12px;margin-top:16px}
-      .social-buttons .btn{display:block;width:100%;max-width:100%;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
+      .social-buttons .btn{display:block;width:100%;max-width:none;box-sizing:border-box;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
       .contact{padding-bottom:24px}
     }
 
@@ -122,7 +122,7 @@
       <div class="form-group">
         <label>4. 若朋友或同事有需要，您願意推薦自然大叔的清洗服務嗎？</label>
         <div class="note">（1分=完全不會推薦，10分=一定會推薦）</div>
-        <input type="range" name="q4" min="1" max="10" value="5" oninput="this.nextElementSibling.value=this.value"/>
+        <input id="q4" type="range" name="q4" min="1" max="10" value="5" oninput="this.nextElementSibling.value=this.value"/>
         <output>5</output>
       </div>
 
@@ -166,19 +166,29 @@
   <div id="loadingBackdrop" aria-hidden="true"><div class="loading-card"><span class="spinner"></span>資料送出中，請稍候…</div></div>
 
   <script>
-    // === 進度條 ===
+    // === 進度條：只計入使用者實際填答，初始化為 0% ===
     (function(){
       var form=document.getElementById("surveyForm");
       var progressBar=document.getElementById("progressBar");
       function update(){
-        var answered=0,total=7;
+        var answered=0; // 依實際題目數計算
+        var total=6;    // q1~q5 + q6（文字）
+        var touchedRange=false;
         form.querySelectorAll("input,textarea").forEach(function(el){
-          if((el.type==="radio"&&el.checked)||(el.type==="text"&&el.value.trim()!=="")||(el.type==="range"&&el.value)||(el.tagName==="TEXTAREA"&&el.value.trim()!=="")) answered++;
+          if(el.name==="q4" && el.type==="range"){
+            // 只有使用者把滑桿從預設值 5 移動時才算有填答
+            if(el.value!=="5") touchedRange=true;
+            return;
+          }
+          if(el.type==="radio" && el.checked) answered++;
+          else if(el.type==="text" && el.value.trim()!=='') answered++;
+          else if(el.tagName==="TEXTAREA" && el.value.trim()!=='') answered++;
         });
+        if(touchedRange) answered++;
         progressBar.style.width=Math.min(answered/total*100,100)+"%";
       }
       form.addEventListener("input",update);
-      update(); // 初始化
+      update(); // 初始化為 0%
     })();
 
     // === 送出處理：顯示 Loading 並導到 thankyou ===
