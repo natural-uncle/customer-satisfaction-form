@@ -29,7 +29,7 @@ export default async (req, context) => {
         try { data = JSON.parse(text || "{}"); }
         catch { data = Object.fromEntries(new URLSearchParams(text)); }
       }
-    } catch (e) {
+    } catch {
       const text = await req.text().catch(() => "");
       try { data = JSON.parse(text || "{}"); }
       catch { data = Object.fromEntries(new URLSearchParams(text)); }
@@ -38,7 +38,7 @@ export default async (req, context) => {
     // ---- Env & subject ----
     const siteName = process.env.SITE_NAME || "顧客滿意度調查";
     const toEmail  = process.env.TO_EMAIL;
-    const fromEmail= process.env.FROM_EMAIL_;
+    const fromEmail= process.env.FROM_EMAIL;
     const apiKey   = process.env.BREVO_API_KEY;
 
     if (!apiKey || !toEmail || !fromEmail) {
@@ -47,8 +47,7 @@ export default async (req, context) => {
       }), { status: 500, headers: { "content-type": "application/json; charset=utf-8" } });
     }
 
-    const customerName =
-      data.customer_name || data.name || data.line || data["姓名"] || "";
+    const customerName = data.customer_name || data.name || data.line || data["姓名"] || "";
     const subject = `【${siteName}】新問卷回覆：${customerName || "未填姓名"}`;
 
     // ---- Label map (Chinese) & output order ----
@@ -63,22 +62,14 @@ export default async (req, context) => {
       q6: "其他建議",
     };
 
-    const skipKeys = new Set([
-      "bot-field",
-      "form-name",
-      "g-recaptcha-response",
-      "submit",
-      "userAgent",
-      "submittedAt",
-    ]);
+    const skipKeys = new Set(["bot-field","form-name","g-recaptcha-response","submit","userAgent","submittedAt"]);
 
-    // 先依 labelMap 的順序輸出已存在的欄位
+    // 先依 labelMap 順序
     let orderedPairs = Object.keys(labelMap)
-      .filter((k) => k in data)
-      .map((k) => [k, data[k]]);
-
-    // 再補上未在 labelMap 但有送來的欄位（不含 skip）
-    for (const [k, v] of Object.entries(data)) {
+      .filter(k => k in data)
+      .map(k => [k, data[k]]);
+    // 再補上其他欄位
+    for (const [k,v] of Object.entries(data)) {
       if (skipKeys.has(k)) continue;
       if (!(k in labelMap) && !orderedPairs.some(([ok]) => ok === k)) {
         orderedPairs.push([k, v]);
@@ -87,12 +78,10 @@ export default async (req, context) => {
 
     const rows = orderedPairs
       .filter(([k]) => !skipKeys.has(k))
-      .map(([k, v]) => {
+      .map(([k,v]) => {
         const key = labelMap[k] || k;
         const val = Array.isArray(v) ? v.join(", ") : String(v ?? "");
-        return `<tr><th align="left" style="white-space:nowrap">${escapeHtml(
-          key
-        )}</th><td>${escapeHtml(val).replace(/\n/g, "<br/>") || "(未填)"}</td></tr>`;
+        return `<tr><th align="left" style="white-space:nowrap">${escapeHtml(key)}</th><td>${escapeHtml(val).replace(/\n/g,"<br/>") || "(未填)"}</td></tr>`;
       })
       .join("\n");
 
@@ -107,9 +96,7 @@ export default async (req, context) => {
           <tr><th align="left">送出時間</th><td>${escapeHtml(submittedAt)}</td></tr>
           <tr><th align="left">User-Agent</th><td>${escapeHtml(userAgent)}</td></tr>
         </table>
-        <pre style="margin-top:12px;background:#f6f8fa;padding:12px;border-radius:6px;overflow:auto">${escapeHtml(
-          JSON.stringify(data, null, 2)
-        )}</pre>
+        <pre style="margin-top:12px;background:#f6f8fa;padding:12px;border-radius:6px;overflow:auto">${escapeHtml(JSON.stringify(data, null, 2))}</pre>
       </div>
     `;
 
@@ -131,13 +118,10 @@ export default async (req, context) => {
 
     if (!res.ok) {
       const errText = await res.text().catch(() => "");
-      return new Response(
-        JSON.stringify({ error: "Brevo API error", details: errText }),
-        {
-          status: 502,
-          headers: { "content-type": "application/json; charset=utf-8" },
-        }
-      );
+      return new Response(JSON.stringify({ error: "Brevo API error", details: errText }), {
+        status: 502,
+        headers: { "content-type": "application/json; charset=utf-8" },
+      });
     }
 
     return new Response(JSON.stringify({ ok: true }), {
@@ -155,7 +139,6 @@ export default async (req, context) => {
   }
 };
 
-// --- helper: basic HTML escape to avoid breaking table/content ---
 function escapeHtml(s) {
   return String(s)
     .replace(/&/g, "&amp;")
