@@ -1,5 +1,5 @@
 // netlify/functions/submit.js
-// Final version: robust parsing + ordered Chinese labels + JSON responses
+// Robust parsing + ordered Chinese labels + JSON responses
 // Env vars required: BREVO_API_KEY, TO_EMAIL, FROM_EMAIL
 // Optional: SITE_NAME
 
@@ -47,8 +47,10 @@ export default async (req, context) => {
       }), { status: 500, headers: { "content-type": "application/json; charset=utf-8" } });
     }
 
-    const customerName = data.customer_name || data.name || data.line || data["姓名"] || "";
-    const subject = `【${siteName}】新問卷回覆：${customerName || "未填姓名"}`;
+    const customerName =
+      data.customer_name || data.name || data.line || data["姓名"] || "";
+    // 👉 主旨改為固定「【服務滿意度】」
+    const subject = `【服務滿意度】新問卷回覆：${customerName || "未填姓名"}`;
 
     // ---- Label map (Chinese) & output order ----
     const labelMap = {
@@ -62,14 +64,16 @@ export default async (req, context) => {
       q6: "其他建議",
     };
 
-    const skipKeys = new Set(["bot-field","form-name","g-recaptcha-response","submit","userAgent","submittedAt"]);
+    const skipKeys = new Set([
+      "bot-field","form-name","g-recaptcha-response","submit","userAgent","submittedAt",
+    ]);
 
-    // 先依 labelMap 順序
+    // 先依 labelMap 的順序輸出
     let orderedPairs = Object.keys(labelMap)
-      .filter(k => k in data)
-      .map(k => [k, data[k]]);
-    // 再補上其他欄位
-    for (const [k,v] of Object.entries(data)) {
+      .filter((k) => k in data)
+      .map((k) => [k, data[k]]);
+    // 再補上未列於 labelMap 的欄位
+    for (const [k, v] of Object.entries(data)) {
       if (skipKeys.has(k)) continue;
       if (!(k in labelMap) && !orderedPairs.some(([ok]) => ok === k)) {
         orderedPairs.push([k, v]);
@@ -78,7 +82,7 @@ export default async (req, context) => {
 
     const rows = orderedPairs
       .filter(([k]) => !skipKeys.has(k))
-      .map(([k,v]) => {
+      .map(([k, v]) => {
         const key = labelMap[k] || k;
         const val = Array.isArray(v) ? v.join(", ") : String(v ?? "");
         return `<tr><th align="left" style="white-space:nowrap">${escapeHtml(key)}</th><td>${escapeHtml(val).replace(/\n/g,"<br/>") || "(未填)"}</td></tr>`;
