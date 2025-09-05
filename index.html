@@ -49,7 +49,6 @@ body.dark .footer{color:#aaa}
 .btn .label{letter-spacing:.2px;font-size:.95rem}
 
 /* 行動裝置調整 */
-
 @media (max-width:600px){
   .container{margin:10px;padding:18px;border-radius:10px}
   h2{font-size:1.5rem}
@@ -61,22 +60,6 @@ body.dark .footer{color:#aaa}
   .social-buttons{flex-direction:column;align-items:stretch;gap:12px;margin-top:16px}
   .social-buttons .btn{display:block;width:100%;max-width:100%;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
   .contact{padding-bottom:24px}
-}
-
-  .social-buttons .btn{display:block;width:100%;max-width:420px;margin:0 auto;padding:12px 16px}
-  /* gap 的相容性備援，在舊版 iOS Safari 上維持上下間距 */
-  .social-buttons .btn + .btn{margin-top:12px}
-  /* 與底部元素保持距離，避免貼齊 */
-  .contact{padding-bottom:24px}
-
-}
-  h2{font-size:1.5rem}
-  p,label{font-size:1.05rem;line-height:1.6}
-  input[type=text],textarea{font-size:1.05rem;padding:14px}
-  button{width:100%;padding:16px;font-size:1.15rem}
-  .social-buttons{flex-direction:column;align-items:center}
-  .social-buttons .btn{width:auto;min-width:200px;justify-content:center;padding:10px 14px;font-size:.95rem}
-  
 }
 
 /* Loading Backdrop */
@@ -183,7 +166,7 @@ body.dark .footer{color:#aaa}
   <div class="footer">© 2025 自然大叔｜專業家電清洗服務</div>
 </div>
 
-<div id="loadingBackdrop"><div class="loading-card"><span class="spinner"></span>資料送出中，請稍候…</div></div>
+<div id="loadingBackdrop" hidden><div class="loading-card"><span class="spinner"></span>資料送出中，請稍候…</div></div>
 
 <script>
 /* === 進度條 === */
