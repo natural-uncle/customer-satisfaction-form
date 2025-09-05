@@ -1,202 +1,209 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>自然大叔清洗服務｜顧客滿意度調查</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>自然大叔清洗服務｜顧客滿意度調查</title>
 
-<style>
-/* === 主要樣式 === */
-body{font-family:"Microsoft JhengHei",sans-serif;background:#f9faf9;color:#333;margin:0}
-.container{max-width:800px;margin:20px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
-.logo{text-align:center;margin-bottom:20px}
-.logo img{max-width:100%;border-radius:12px}
-h2{text-align:center;color:#3a6d4f;margin:10px 0;font-size:2rem}
-p{line-height:1.7;color:#555;font-size:1.05rem}
-.form-group{margin-bottom:20px}
-label{font-weight:bold;display:block;margin-bottom:8px;color:#3a6d4f;font-size:1.1rem}
-.options label{display:block;margin:5px 0}
-textarea,input[type=text]{width:100%;box-sizing:border-box;padding:14px;border:1px solid #ccc;border-radius:8px;font-size:1rem;resize:vertical;margin-top:8px}
-input[type=range]{width:100%}
-button{background:#3a6d4f;color:#fff;border:0;padding:14px 20px;font-size:1.1rem;border-radius:8px;cursor:pointer;display:block;margin:0 auto}
-button:hover{background:#2d523c}
-.contact{margin-top:30px;padding:20px;background:#f1f9f1;border-radius:12px;font-size:1rem;text-align:center}
-.footer{text-align:center;margin-top:40px;font-size:.95rem;color:#777}
-.progress-container{background:#e0e0e0;border-radius:20px;margin:20px 0;height:20px;width:100%;overflow:hidden}
-.progress-bar{height:100%;background:#3a6d4f;width:0%;transition:width .3s ease}
+  <style>
+    /* === 主要樣式 === */
+    body{font-family:"Microsoft JhengHei",sans-serif;background:#f9faf9;color:#333;margin:0}
+    .container{max-width:800px;margin:20px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+    .logo{text-align:center;margin-bottom:20px}
+    .logo img{max-width:100%;border-radius:12px}
+    h2{text-align:center;color:#3a6d4f;margin:10px 0;font-size:2rem}
+    p{line-height:1.7;color:#555;font-size:1.05rem}
+    .form-group{margin-bottom:20px}
+    label{font-weight:bold;display:block;margin-bottom:8px;color:#3a6d4f;font-size:1.1rem}
+    .options label{display:block;margin:5px 0}
+    textarea,input[type=text]{width:100%;box-sizing:border-box;padding:14px;border:1px solid #ccc;border-radius:8px;font-size:1rem;resize:vertical;margin-top:8px}
+    input[type=range]{width:100%}
+    button{background:#3a6d4f;color:#fff;border:0;padding:14px 20px;font-size:1.1rem;border-radius:8px;cursor:pointer;display:block;margin:0 auto}
+    button:hover{background:#2d523c}
+    .contact{margin-top:30px;padding:20px;background:#f1f9f1;border-radius:12px;font-size:1rem;text-align:center}
+    .footer{text-align:center;margin-top:40px;font-size:.95rem;color:#777}
+    .progress-container{background:#e0e0e0;border-radius:20px;margin:20px 0;height:20px;width:100%;overflow:hidden}
+    .progress-bar{height:100%;background:#3a6d4f;width:0%;transition:width .3s ease}
 
-/* === 深淺色主題 === */
+    /* === 深淺色主題 === */
+    body.dark{background:#121212;color:#eee}
+    body.dark .container{background:#1e1e1e;box-shadow:0 4px 12px rgba(0,0,0,.6)}
+    body.dark h2,body.dark label{color:#9ad0b1}
+    body.dark p{color:#ccc}
+    body.dark textarea,body.dark input[type=text],body.dark input[type=range]{background:#2a2a2a;color:#eee;border:1px solid #555}
+    body.dark button{background:#4da67a}
+    body.dark button:hover{background:#3b7e5b}
+    body.dark .progress-container{background:#333}
+    body.dark .progress-bar{background:#4da67a}
+    body.dark .contact{background:#202020;color:#ccc}
+    body.dark .footer{color:#aaa}
 
-body.dark{background:#121212;color:#eee}
-body.dark .container{background:#1e1e1e;box-shadow:0 4px 12px rgba(0,0,0,.6)}
-body.dark h2,body.dark label{color:#9ad0b1}
-body.dark p{color:#ccc}
-body.dark textarea,body.dark input[type=text],body.dark input[type=range]{background:#2a2a2a;color:#eee;border:1px solid #555}
-body.dark button{background:#4da67a}
-body.dark button:hover{background:#3b7e5b}
-body.dark .progress-container{background:#333}
-body.dark .progress-bar{background:#4da67a}
-body.dark .contact{background:#202020;color:#ccc}
-body.dark .footer{color:#aaa}
-/* === 社群品牌按鈕 === */
-.social-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:12px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;font-weight:700;text-decoration:none;box-shadow:0 6px 16px rgba(0,0,0,.12);transition:transform .15s ease,filter .15s ease}
-.btn svg{width:18px;height:18px;flex:0 0 auto}
-.btn-line{background:linear-gradient(180deg,#07d15f,#06c755);color:#fff}
-.btn-line:hover{transform:translateY(-1px);filter:brightness(1.02)}
-.btn-fb{background:linear-gradient(180deg,#2a86ff,#1877f2);color:#fff}
-.btn-fb:hover{transform:translateY(-1px);filter:brightness(1.02)}
-.btn .label{letter-spacing:.2px;font-size:.95rem}
+    /* === 社群品牌按鈕 === */
+    .social-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;font-weight:700;text-decoration:none;box-shadow:0 6px 16px rgba(0,0,0,.12);transition:transform .15s ease,filter .15s ease}
+    .btn svg{width:18px;height:18px;flex:0 0 auto}
+    .btn-line{background:linear-gradient(180deg,#07d15f,#06c755);color:#fff}
+    .btn-line:hover{transform:translateY(-1px);filter:brightness(1.02)}
+    .btn-fb{background:linear-gradient(180deg,#2a86ff,#1877f2);color:#fff}
+    .btn-fb:hover{transform:translateY(-1px);filter:brightness(1.02)}
+    .btn .label{letter-spacing:.2px;font-size:.95rem}
 
-/* 行動裝置調整 */
+    /* 行動裝置調整 */
+    @media (max-width:600px){
+      .container{margin:10px;padding:18px;border-radius:10px}
+      h2{font-size:1.5rem}
+      p,label{font-size:1.05rem;line-height:1.6}
+      input[type=text],textarea{font-size:1.05rem;padding:14px}
+      button{width:100%;padding:16px;font-size:1.15rem}
 
-@media (max-width:600px){
-  .container{margin:10px;padding:18px;border-radius:10px}
-  h2{font-size:1.5rem}
-  p,label{font-size:1.05rem;line-height:1.6}
-  input[type=text],textarea{font-size:1.05rem;padding:14px}
-  button{width:100%;padding:16px;font-size:1.15rem}
+      /* 社群按鈕手機版調整：垂直堆疊，滿版但不超出容器 */
+      .social-buttons{flex-direction:column;align-items:stretch;gap:12px;margin-top:16px}
+      .social-buttons .btn{display:block;width:100%;max-width:100%;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
+      .contact{padding-bottom:24px}
+    }
 
-  /* 社群按鈕手機版調整：垂直堆疊，滿版但不超出容器 */
-  .social-buttons{flex-direction:column;align-items:stretch;gap:12px;margin-top:16px}
-  .social-buttons .btn{display:block;width:100%;max-width:100%;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
-  .contact{padding-bottom:24px}
-}
-
-  .social-buttons .btn{display:block;width:100%;max-width:420px;margin:0 auto;padding:12px 16px}
-  /* gap 的相容性備援，在舊版 iOS Safari 上維持上下間距 */
-  .social-buttons .btn + .btn{margin-top:12px}
-  /* 與底部元素保持距離，避免貼齊 */
-  .contact{padding-bottom:24px}
-
-}
-  h2{font-size:1.5rem}
-  p,label{font-size:1.05rem;line-height:1.6}
-  input[type=text],textarea{font-size:1.05rem;padding:14px}
-  button{width:100%;padding:16px;font-size:1.15rem}
-  .social-buttons{flex-direction:column;align-items:center}
-  .social-buttons .btn{width:auto;min-width:200px;justify-content:center;padding:10px 14px;font-size:.95rem}
-  
-}
-
-/* Loading Backdrop */
-#loadingBackdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.4);z-index:9999}
-#loadingBackdrop.show{display:flex}
-.loading-card{background:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-.spinner{width:18px;height:18px;border:3px solid #ddd;border-top-color:#888;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;margin-right:8px;vertical-align:-3px}
-@keyframes spin{to{transform:rotate(360deg)}}
-</style>
+    /* Loading Backdrop */
+    #loadingBackdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.4);z-index:9999}
+    #loadingBackdrop.show{display:flex}
+    .loading-card{background:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    .spinner{width:18px;height:18px;border:3px solid #ddd;border-top-color:#888;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;margin-right:8px;vertical-align:-3px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="logo"><img src="ChatGPT.png" alt="自然大叔清洗服務 顧客滿意度調查"/></div>
+    <h2>誠摯邀請您填寫滿意度調查</h2>
+    <p>感謝您選擇 <b>自然大叔專業家電清洗服務</b>！我們致力提供安心、放心的清洗體驗。</p>
 
+    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
 
+    <form id="surveyForm" method="POST" action="/api/submit" data-redirect="thankyou">
+      <div class="form-group">
+        <label>👤 請留下您的姓名或 LINE ID</label>
+        <input type="text" name="customer_name" placeholder="輸入姓名或 LINE ID"/>
+      </div>
 
-<div class="container">
-  <div class="logo"><img src="ChatGPT.png" alt="自然大叔清洗服務 顧客滿意度調查"/></div>
-  <h2>誠摯邀請您填寫滿意度調查</h2>
-  <p>感謝您選擇 <b>自然大叔專業家電清洗服務</b>！我們致力提供安心、放心的清洗體驗。</p>
+      <div class="form-group">
+        <label>1. 您對這次的清洗服務整體體驗感覺如何？</label>
+        <div class="options">
+          <label><input type="radio" name="q1" value="非常滿意"/> 非常滿意</label>
+          <label><input type="radio" name="q1" value="滿意"/> 滿意</label>
+          <label><input type="radio" name="q1" value="普通"/> 普通</label>
+          <label><input type="radio" name="q1" value="不太滿意"/> 不太滿意</label>
+          <label><input type="radio" name="q1" value="非常不滿意"/> 非常不滿意</label>
+        </div>
+      </div>
 
-  <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="form-group">
+        <label>2. 您對服務人員的專業程度是否滿意？</label>
+        <div class="options">
+          <label><input type="radio" name="q2" value="非常滿意"/> 非常滿意</label>
+          <label><input type="radio" name="q2" value="滿意"/> 滿意</label>
+          <label><input type="radio" name="q2" value="普通"/> 普通</label>
+          <label><input type="radio" name="q2" value="不太滿意"/> 不太滿意</label>
+          <label><input type="radio" name="q2" value="非常不滿意"/> 非常不滿意</label>
+        </div>
+        <textarea name="q2_extra" placeholder="若有特別印象或建議，請填寫..."></textarea>
+      </div>
 
-  <form id="surveyForm" method="POST" action="/api/submit">
-    <div class="form-group">
-      <label>👤 請留下您的姓名或 LINE ID</label>
-      <input type="text" name="customer_name" placeholder="輸入姓名或 LINE ID"/>
-    </div>
+      <div class="form-group">
+        <label>3. 您認為服務人員的整體表現如何？</label>
+        <div class="note">（1分=非常不滿意，5分=非常滿意）</div>
+        <div class="options">
+          <label><input type="radio" name="q3" value="1"/> 1 分</label>
+          <label><input type="radio" name="q3" value="2"/> 2 分</label>
+          <label><input type="radio" name="q3" value="3"/> 3 分</label>
+          <label><input type="radio" name="q3" value="4"/> 4 分</label>
+          <label><input type="radio" name="q3" value="5"/> 5 分</label>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label>1. 您對這次的清洗服務整體體驗感覺如何？</label>
-      <div class="options">
-        <label><input type="radio" name="q1" value="非常滿意"/> 非常滿意</label>
-        <label><input type="radio" name="q1" value="滿意"/> 滿意</label>
-        <label><input type="radio" name="q1" value="普通"/> 普通</label>
-        <label><input type="radio" name="q1" value="不太滿意"/> 不太滿意</label>
-        <label><input type="radio" name="q1" value="非常不滿意"/> 非常不滿意</label>
+      <div class="form-group">
+        <label>4. 若朋友或同事有需要，您願意推薦自然大叔的清洗服務嗎？</label>
+        <div class="note">（1分=完全不會推薦，10分=一定會推薦）</div>
+        <input type="range" name="q4" min="1" max="10" value="5" oninput="this.nextElementSibling.value=this.value"/>
+        <output>5</output>
+      </div>
+
+      <div class="form-group">
+        <label>5. 未來是否會再次委託自然大叔進行家電清洗服務？</label>
+        <div class="options">
+          <label><input type="radio" name="q5" value="一定會"/> 一定會</label>
+          <label><input type="radio" name="q5" value="有需要會考慮"/> 有需要會考慮</label>
+          <label><input type="radio" name="q5" value="可能不會"/> 可能不會</label>
+          <label><input type="radio" name="q5" value="不會"/> 不會</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>6. 您對我們的服務有任何想法、鼓勵或建議嗎？</label>
+        <textarea name="q6" placeholder="📝 請自由填寫您的建議..."></textarea>
+      </div>
+
+      <button type="submit">送出表單</button>
+    </form>
+
+    <div class="contact">
+      <h3>📱 聯絡我們｜自然大叔</h3>
+
+      <div class="social-buttons" role="group" aria-label="社群連結">
+        <a class="btn btn-line" href="https://lin.ee/OHk6Rn7" target="_blank" rel="noopener noreferrer" aria-label="加入 LINE 官方帳號">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.667 3H4.333A3.333 3.333 0 0 0 1 6.333v7.334A3.333 3.333 0 0 0 4.333 17H7l3.478 3.2c.512.47 1.355.095 1.355-.589V17h7.834A3.333 3.333 0 0 0 23 13.667V6.333A3.333 3.333 0 0 0 19.667 3z"/></svg>
+          <span class="label">加入 LINE</span>
+        </a>
+
+        <a class="btn btn-fb" href="https://www.facebook.com/naturaluncle" target="_blank" rel="noopener noreferrer" aria-label="前往 Facebook 粉絲專頁">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22 12.07C22 6.49 17.52 2 11.93 2S2 6.49 2 12.07c0 5 3.66 9.15 8.44 9.93v-7.02H7.9V12.1h2.54V9.86c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.91h2.78l-.44 2.88h-2.34V22c4.78-.78 8.44-4.93 8.44-9.93z"/></svg>
+          <span class="label">追蹤 Facebook</span>
+        </a>
       </div>
     </div>
 
-    <div class="form-group">
-      <label>2. 您對服務人員的專業程度是否滿意？</label>
-      <div class="options">
-        <label><input type="radio" name="q2" value="非常滿意"/> 非常滿意</label>
-        <label><input type="radio" name="q2" value="滿意"/> 滿意</label>
-        <label><input type="radio" name="q2" value="普通"/> 普通</label>
-        <label><input type="radio" name="q2" value="不太滿意"/> 不太滿意</label>
-        <label><input type="radio" name="q2" value="非常不滿意"/> 非常不滿意</label>
-      </div>
-      <textarea name="q2_extra" placeholder="若有特別印象或建議，請填寫..."></textarea>
-    </div>
-
-    <div class="form-group">
-      <label>3. 您認為服務人員的整體表現如何？</label>
-      <div class="note">（1分=非常不滿意，5分=非常滿意）</div>
-      <div class="options">
-        <label><input type="radio" name="q3" value="1"/> 1 分</label>
-        <label><input type="radio" name="q3" value="2"/> 2 分</label>
-        <label><input type="radio" name="q3" value="3"/> 3 分</label>
-        <label><input type="radio" name="q3" value="4"/> 4 分</label>
-        <label><input type="radio" name="q3" value="5"/> 5 分</label>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>4. 若朋友或同事有需要，您願意推薦自然大叔的清洗服務嗎？</label>
-      <div class="note">（1分=完全不會推薦，10分=一定會推薦）</div>
-      <input type="range" name="q4" min="1" max="10" value="5" oninput="this.nextElementSibling.value=this.value"/>
-      <output>5</output>
-    </div>
-
-    <div class="form-group">
-      <label>5. 未來是否會再次委託自然大叔進行家電清洗服務？</label>
-      <div class="options">
-        <label><input type="radio" name="q5" value="一定會"/> 一定會</label>
-        <label><input type="radio" name="q5" value="有需要會考慮"/> 有需要會考慮</label>
-        <label><input type="radio" name="q5" value="可能不會"/> 可能不會</label>
-        <label><input type="radio" name="q5" value="不會"/> 不會</label>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>6. 您對我們的服務有任何想法、鼓勵或建議嗎？</label>
-      <textarea name="q6" placeholder="📝 請自由填寫您的建議..."></textarea>
-    </div>
-
-    <button type="submit">送出表單</button>
-  </form>
-
-  <div class="contact">
-    <h3>📱 聯絡我們｜自然大叔</h3>
-
-    <div class="social-buttons" role="group" aria-label="社群連結">
-      <a class="btn btn-line" href="https://lin.ee/OHk6Rn7" target="_blank" rel="noopener noreferrer" aria-label="加入 LINE 官方帳號">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.667 3H4.333A3.333 3.333 0 0 0 1 6.333v7.334A3.333 3.333 0 0 0 4.333 17H7l3.478 3.2c.512.47 1.355.095 1.355-.589V17h7.834A3.333 3.333 0 0 0 23 13.667V6.333A3.333 3.333 0 0 0 19.667 3z"/></svg>
-        <span class="label">加入 LINE</span>
-      </a>
-
-      <a class="btn btn-fb" href="https://www.facebook.com/naturaluncle" target="_blank" rel="noopener noreferrer" aria-label="前往 Facebook 粉絲專頁">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22 12.07C22 6.49 17.52 2 11.93 2S2 6.49 2 12.07c0 5 3.66 9.15 8.44 9.93v-7.02H7.9V12.1h2.54V9.86c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.91h2.78l-.44 2.88h-2.34V22c4.78-.78 8.44-4.93 8.44-9.93z"/></svg>
-        <span class="label">追蹤 Facebook</span>
-      </a>
-    </div>
+    <div class="footer">© 2025 自然大叔｜專業家電清洗服務</div>
   </div>
 
-  <div class="footer">© 2025 自然大叔｜專業家電清洗服務</div>
-</div>
+  <div id="loadingBackdrop" aria-hidden="true"><div class="loading-card"><span class="spinner"></span>資料送出中，請稍候…</div></div>
 
-<div id="loadingBackdrop"><div class="loading-card"><span class="spinner"></span>資料送出中，請稍候…</div></div>
+  <script>
+    // === 進度條 ===
+    (function(){
+      var form=document.getElementById("surveyForm");
+      var progressBar=document.getElementById("progressBar");
+      function update(){
+        var answered=0,total=7;
+        form.querySelectorAll("input,textarea").forEach(function(el){
+          if((el.type==="radio"&&el.checked)||(el.type==="text"&&el.value.trim()!=="")||(el.type==="range"&&el.value)||(el.tagName==="TEXTAREA"&&el.value.trim()!=="")) answered++;
+        });
+        progressBar.style.width=Math.min(answered/total*100,100)+"%";
+      }
+      form.addEventListener("input",update);
+      update(); // 初始化
+    })();
 
-<script>
-/* === 進度條 === */
-(function(){
-  var form=document.getElementById("surveyForm");
-  var progressBar=document.getElementById("progressBar");
-  function update(){
-    var answered=0,total=7;
-    form.querySelectorAll("input,textarea").forEach(function(el){
-      if((el.type==="radio"&&el.checked)||(el.type==="text"&&el.value.trim()!=="")||(el.type==="range"&&el.value)||(el.tagName==="TEXTAREA"&&el.value.trim()!=="")) answered++;
-    });
-    progressBar.style.width=Math.min(answered/total*100,100)+"%";
-  }
-  form.addEventListener("input",update);
-})();
-
+    // === 送出處理：顯示 Loading 並導到 thankyou ===
+    (function(){
+      var form=document.getElementById('surveyForm');
+      var backdrop=document.getElementById('loadingBackdrop');
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        backdrop.classList.add('show');
+        try{
+          var formData=new FormData(form);
+          var res=await fetch(form.getAttribute('action')||'/api/submit',{
+            method:'POST',
+            body:formData
+          });
+          if(!res.ok){ throw new Error('提交失敗'); }
+          var redirect=form.dataset.redirect||'thankyou';
+          window.location.assign(redirect);
+        }catch(err){
+          backdrop.classList.remove('show');
+          alert('送出失敗，請稍後再試或聯絡我們。');
+          console.error(err);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
