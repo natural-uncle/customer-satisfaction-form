@@ -49,10 +49,20 @@ body.dark .footer{color:#aaa}
 .btn .label{letter-spacing:.2px;font-size:.95rem}
 
 /* 行動裝置調整 */
+
 @media (max-width:600px){
-  .container{margin:10px;padding:18px;border-radius:10px
-  /* 社群按鈕在手機版的排列與間距（含舊版瀏覽器 fallback） */
-  .social-buttons{flex-direction:column;align-items:stretch}
+  .container{margin:10px;padding:18px;border-radius:10px}
+  h2{font-size:1.5rem}
+  p,label{font-size:1.05rem;line-height:1.6}
+  input[type=text],textarea{font-size:1.05rem;padding:14px}
+  button{width:100%;padding:16px;font-size:1.15rem}
+
+  /* 社群按鈕手機版調整：垂直堆疊，滿版但不超出容器 */
+  .social-buttons{flex-direction:column;align-items:stretch;gap:12px;margin-top:16px}
+  .social-buttons .btn{display:block;width:100%;max-width:100%;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
+  .contact{padding-bottom:24px}
+}
+
   .social-buttons .btn{display:block;width:100%;max-width:420px;margin:0 auto;padding:12px 16px}
   /* gap 的相容性備援，在舊版 iOS Safari 上維持上下間距 */
   .social-buttons .btn + .btn{margin-top:12px}
@@ -190,34 +200,3 @@ body.dark .footer{color:#aaa}
   form.addEventListener("input",update);
 })();
 
-/* === 主題切換 === */
-(function(){
-  var btn=document.getElementById("themeToggle");
-
-  function applyTheme(t){
-    document.body.classList.toggle("dark", t==="dark");
-    localStorage.setItem("theme", t);
-    btn.textContent = t==="dark" ? "切換淺" : "切換深";
-  }
-
-  var savedTheme=localStorage.getItem("theme");
-  applyTheme(savedTheme ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
-
-  btn.addEventListener("click", function(){
-    if(btn._dragJustHappened){ btn._dragJustHappened=false; return; }
-    applyTheme(document.body.classList.contains("dark") ? "light" : "dark");
-  });
-
-  var savedPos=null; try{ savedPos=JSON.parse(localStorage.getItem("themeTogglePos")||"null"); }catch(e){}
-  function setPos(x,y){
-    var w=btn.offsetWidth, h=btn.offsetHeight;
-    var maxX=window.innerWidth - w - 8, maxY=window.innerHeight - h - 8;
-    x=Math.max(8,Math.min(x,maxX));
-    y=Math.max(8,Math.min(y,maxY));
-    btn.style.left=x+"px"; btn.style.top=y+"px"; btn.style.right="auto"; btn.style.bottom="auto";
-    localStorage.setItem("themeTogglePos", JSON.stringify({left:x, top:y}));
-  }
-  if(savedPos && typeof savedPos.left==="number" && typeof savedPos.top==="number"){ setPos(savedPos.left, savedPos.top); }
-
-  var dragging=false,startX=0,startY=0,origX=0,origY=0,moved=false;
-  function onDown(e){ dragging=true; moved=false; btn.setPointerCapture && btn.setPointerCapture(e.pointerId); var rect=btn.getBoundingClientRect(); origX=rect.left; origY=rect.top; startX=e.clientX; startY=e.clientY
