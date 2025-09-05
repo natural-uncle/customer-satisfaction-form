@@ -1,74 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8"> <!-- 設定網頁使用 UTF-8 編碼，支援中文 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 手機RWD響應式設計 -->
-  <title>感謝您的填寫｜自然大叔清洗服務</title>
-
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>感謝您的填寫</title>
   <style>
-    /* ===== 整體頁面樣式 ===== */
-    body {
-      font-family: "Microsoft JhengHei", sans-serif; /* 預設字體 微軟正黑體 */
-      background-color: #f9faf9; /* 背景淺灰 */
-      color: #333; /* 預設文字顏色 */
-      margin: 0;
-      padding: 0;
-      display: flex; /* 使用 flex 排版 */
-      justify-content: center; /* 水平置中 */
-      align-items: center; /* 垂直置中 */
-      height: 100vh; /* 高度填滿螢幕 */
-      text-align: center; /* 文字置中 */
-    }
-
-    /* ===== 感謝訊息的外框樣式 ===== */
-    .thankyou-box {
-      background: #ffffff; /* 白色背景 */
-      padding: 30px; /* 內距 */
-      border-radius: 12px; /* 圓角邊框 */
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 淡淡的陰影 */
-      max-width: 500px; /* 最大寬度 */
-      width: 90%; /* RWD 手機時自動縮小 */
-    }
-
-    /* ===== 標題文字樣式 ===== */
-    h1 {
-      color: #3a6d4f; /* 深綠色 */
-      font-size: 1.8rem; /* 字體大小 */
-      margin-bottom: 20px; /* 下方留白 */
-    }
-
-    /* ===== 內文樣式 ===== */
-    p {
-      font-size: 1.1rem; /* 字體大小 */
-      color: #555; /* 灰色文字 */
-      margin-bottom: 20px; /* 下方留白 */
-    }
-
-    /* ===== 返回首頁按鈕樣式 ===== */
-    .btn {
-      display: inline-block; /* 讓按鈕可以設定寬高 */
-      padding: 12px 20px; /* 內距 */
-      border-radius: 8px; /* 圓角 */
-      text-decoration: none; /* 移除底線 */
-      background-color: #3a6d4f; /* 綠色背景 */
-      color: white; /* 白色文字 */
-      font-weight: bold; /* 粗體 */
-      transition: background 0.3s ease; /* 滑鼠移過去有漸變效果 */
-    }
-
-    .btn:hover {
-      background-color: #2d523c; /* 滑鼠移過去變深綠 */
-    }
+    body{font-family:"Microsoft JhengHei",sans-serif;background:#f6fff8;color:#2c3e50;margin:0;display:flex;align-items:center;justify-content:center;height:100vh}
+    .card{background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.1);padding:28px 32px;text-align:center;max-width:520px}
+    h1{color:#3a6d4f;margin:0 0 10px}
+    p{line-height:1.7;margin:0 0 16px}
+    a{display:inline-block;margin-top:8px;text-decoration:none;background:#3a6d4f;color:#fff;padding:10px 16px;border-radius:8px}
+    a:hover{background:#2d523c}
   </style>
 </head>
 <body>
-  <!-- ===== 感謝訊息主體區塊 ===== -->
-  <div class="thankyou-box">
-    <h1>✅ 感謝您的填寫！</h1> <!-- 標題 -->
-    <p>
-      您的寶貴意見已成功送出<br>我們將持續努力提供更好的服務 🙏
-    </p> <!-- 說明文字 -->
-    <a href="index.html" class="btn">回到首頁</a> <!-- 返回首頁按鈕 -->
+  <div class="card">
+    <h1>✅ 感謝您的填寫！</h1>
+    <p>您的意見已成功送出，我們會持續努力提供更好的服務。</p>
+    <a href="./">回到首頁</a>
   </div>
 </body>
 </html>
