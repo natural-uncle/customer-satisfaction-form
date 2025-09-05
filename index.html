@@ -20,11 +20,11 @@ textarea,input[type=text]{width:100%;box-sizing:border-box;padding:14px;border:1
 input[type=range]{width:100%}
 button{background:#3a6d4f;color:#fff;border:0;padding:14px 20px;font-size:1.1rem;border-radius:8px;cursor:pointer;display:block;margin:0 auto}
 button:hover{background:#2d523c}
-.contact{margin-top:30px;padding:20px;background:#f1f9f1;border-radius:12px;font-size:1rem;text-align:center}
+.contact{margin-top:30px;padding:20px;background:#f1f9f1;border-radius:8px;font-size:1rem;text-align:center}
 .footer{text-align:center;margin-top:40px;font-size:.95rem;color:#777}
 .progress-container{background:#e0e0e0;border-radius:20px;margin:20px 0;height:20px;width:100%;overflow:hidden}
 .progress-bar{height:100%;background:#3a6d4f;width:0%;transition:width .3s ease}
-.theme-toggle{position:fixed;top:15px;right:15px;background:#3a6d4f;color:#fff;border:0;border-radius:50%;width:42px;height:42px;cursor:pointer;font-size:18px;z-index:1000}
+.theme-toggle{position:fixed;top:15px;right:15px;background:#3a6d4f;color:#fff;border:0;border-radius:50%;width:42px;height:42px;cursor:pointer;font-size:18px}
 body.dark{background:#121212;color:#eee}
 body.dark .container{background:#1e1e1e;box-shadow:0 4px 12px rgba(0,0,0,.6)}
 body.dark h2,body.dark label{color:#9ad0b1}
@@ -36,69 +36,18 @@ body.dark .progress-container{background:#333}
 body.dark .progress-bar{background:#4da67a}
 body.dark .contact{background:#2a2a2a;color:#ccc}
 body.dark .footer{color:#aaa}
-
-/* === 社群按鈕：頁尾樣式 === */
-.social-bar{
-  display:flex; gap:14px; justify-content:center; align-items:stretch; flex-wrap:wrap;
-  margin-top:14px;
-}
-.social-btn{
-  display:inline-flex; align-items:center; gap:10px;
-  padding:12px 16px; border-radius:12px; text-decoration:none; font-weight:700;
-  box-shadow:0 6px 18px rgba(0,0,0,.12);
-  transition:transform .15s ease, box-shadow .15s ease, filter .2s ease;
-  border:1px solid rgba(0,0,0,.06);
-}
-.social-btn:active{ transform:translateY(1px) }
-.social-btn:hover{ box-shadow:0 10px 24px rgba(0,0,0,.16) }
-.social-btn svg{ width:22px; height:22px; flex:0 0 22px }
-.btn-line{ background:#06c755; color:#fff }
-.btn-fb{ background:#1877f2; color:#fff }
-.btn-light{ background:#fff; color:#333 }
-.btn-outline{ background:transparent; color:inherit; border:1px solid currentColor }
-
-/* 亮/暗主題微調（讓按鈕對比更好看） */
-body.dark .btn-line{ background:#11d167 }
-body.dark .btn-fb{ background:#2d82f6 }
-body.dark .social-btn{ border-color:rgba(255,255,255,.1) }
-
-/* 行動版：上下顯示 */
 @media (max-width:600px){
   .container{margin:10px;padding:18px;border-radius:10px}
   h2{font-size:1.5rem}
   p,label{font-size:1.05rem;line-height:1.6}
   input[type=text],textarea{font-size:1.05rem;padding:14px}
   button{width:100%;padding:16px;font-size:1.15rem}
-  .social-bar{flex-direction:column}
-  .social-btn{justify-content:center}
 }
-
-/* === 可拖曳的浮動社群按鈕（可移動位置） === */
-.social-fab{
-  position:fixed; right:20px; bottom:20px; display:flex; gap:10px; align-items:center;
-  z-index:999; user-select:none; touch-action:none;
-}
-@media (max-width:600px){
-  .social-fab{ flex-direction:column }
-}
-.fab-card{
-  display:flex; gap:10px; padding:10px; background:#ffffffcc; backdrop-filter:blur(6px);
-  border:1px solid rgba(0,0,0,.08); border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,.18);
-}
-body.dark .fab-card{ background:#1e1e1ecc; border-color:rgba(255,255,255,.1) }
-.fab-handle{
-  cursor:grab; align-self:stretch; display:flex; align-items:center; padding:0 6px;
-  color:#888
-}
-.fab-handle:active{ cursor:grabbing }
-.fab-handle svg{ width:18px; height:18px }
-
-/* 小圓形按鈕變體（浮動版更俐落） */
-.fab .social-btn{
-  padding:12px; border-radius:14px; box-shadow:none
-}
-.fab .social-btn span{ display:none } /* 浮動版只顯示圖示，保留可及性文字 */
-.fab .social-btn svg{ width:22px; height:22px }
+#loadingBackdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.4);z-index:9999}
+#loadingBackdrop.show{display:flex}
+.loading-card{background:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+.spinner{width:18px;height:18px;border:3px solid #ddd;border-top-color:#888;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;margin-right:8px;vertical-align:-3px}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -179,42 +128,10 @@ body.dark .fab-card{ background:#1e1e1ecc; border-color:rgba(255,255,255,.1) }
 
   <div class="contact">
     <h3>📱 聯絡我們｜自然大叔</h3>
-
-    <!-- 頁尾版：美化後的按鈕（桌機左右、手機上下） -->
-    <div class="social-bar" aria-label="官方社群連結">
-      <a class="social-btn btn-line" href="https://lin.ee/OHk6Rn7" target="_blank" rel="noopener" aria-label="LINE 官方帳號">
-        <!-- LINE SVG -->
-        <svg viewBox="0 0 40 40" aria-hidden="true"><path fill="currentColor" d="M20 4C10.6 4 3 10.6 3 18.6c0 5.5 3.7 10.2 9.1 12.5-.4 1.6-1.6 6-1.8 6.8-.3 1.1.4 1.1 1 .8.4-.2 6.2-4.2 8.7-5.9.6 0 1.2.1 1.8.1 9.4 0 17-6.6 17-14.6S29.4 4 20 4zM12 22.2v-7.7h2.1v5.9h3.1v1.8H12zm6.6 0v-7.7h2.1v7.7h-2.1zm8.5 0l-3.8-5.6v5.6h-2v-7.7h2l3.8 5.6v-5.6h2v7.7h-2z"/></svg>
-        <span>LINE 官方帳號</span>
-      </a>
-
-      <a class="social-btn btn-fb" href="https://www.facebook.com/naturaluncle" target="_blank" rel="noopener" aria-label="Facebook 粉絲專頁">
-        <!-- Facebook SVG -->
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22 12.06C22 6.53 17.52 2 12 2S2 6.53 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.41c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.91h-2.34V22c4.78-.78 8.44-4.93 8.44-9.94Z"/></svg>
-        <span>Facebook 粉絲專頁</span>
-      </a>
-    </div>
+    <a class="btn btn-line" href="https://lin.ee/OHk6Rn7">🟢 LINE 官方帳號</a>
+    <a class="btn btn-fb" href="https://www.facebook.com/naturaluncle">🔵 Facebook 粉絲專頁</a>
   </div>
   <div class="footer">© 2025 自然大叔｜專業家電清洗服務</div>
-</div>
-
-<!-- 浮動版：可自由移動位置（預設右下） -->
-<div class="social-fab fab" id="socialFab" role="complementary" aria-label="快速社群連結（可拖曳）">
-  <div class="fab-card">
-    <div class="fab-handle" id="fabHandle" title="拖曳移動">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="currentColor" d="M10 4h4v2h-4V4Zm0 7h4v2h-4v-2Zm0 7h4v2h-4v-2Z"/>
-      </svg>
-    </div>
-    <a class="social-btn btn-line" href="https://lin.ee/OHk6Rn7" target="_blank" rel="noopener" title="LINE 官方帳號">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><path fill="currentColor" d="M20 4C10.6 4 3 10.6 3 18.6c0 5.5 3.7 10.2 9.1 12.5-.4 1.6-1.6 6-1.8 6.8-.3 1.1.4 1.1 1 .8.4-.2 6.2-4.2 8.7-5.9.6 0 1.2.1 1.8.1 9.4 0 17-6.6 17-14.6S29.4 4 20 4zM12 22.2v-7.7h2.1v5.9h3.1v1.8H12zm6.6 0v-7.7h2.1v7.7h-2.1zm8.5 0l-3.8-5.6v5.6h-2v-7.7h2l3.8 5.6v-5.6h2v7.7h-2z"/></svg>
-      <span>LINE</span>
-    </a>
-    <a class="social-btn btn-fb" href="https://www.facebook.com/naturaluncle" target="_blank" rel="noopener" title="Facebook 粉絲專頁">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22 12.06C22 6.53 17.52 2 12 2S2 6.53 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.41c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.91h-2.34V22c4.78-.78 8.44-4.93 8.44-9.94Z"/></svg>
-      <span>Facebook</span>
-    </a>
-  </div>
 </div>
 
 <div id="loadingBackdrop"><div class="loading-card"><span class="spinner"></span>資料送出中，請稍候…</div></div>
@@ -246,6 +163,7 @@ body.dark .fab-card{ background:#1e1e1ecc; border-color:rgba(255,255,255,.1) }
 // 提交（fetch → /api/submit；任何 2xx 視為成功）
 (function(){
   var form=document.getElementById("surveyForm");
+  var thankyou=document.querySelector(".thankyou");
   var backdrop=document.getElementById("loadingBackdrop");
   var submitBtn=form.querySelector('[type="submit"]');
 
@@ -286,72 +204,18 @@ body.dark .fab-card{ background:#1e1e1ecc; border-color:rgba(255,255,255,.1) }
       throw new Error("HTTP "+res.status+(txt?(": "+txt):""));
     })
     .then(function(){
-      window.location.href="thankyou.html";
+  window.location.href="thankyou.html";
     })
     .catch(function(err){
-      if (confirm("送出可能成功，但回應格式異常。\\n要前往完成頁嗎？\\n\\n詳細："+(err&&err.message?err.message:err))) {
+      // 即使格式異常也可選擇前往完成頁，避免「成功寄信但前端報錯」
+      if (confirm("送出可能成功，但回應格式異常。\n要前往完成頁嗎？\n\n詳細："+(err&&err.message?err.message:err))) {
         window.location.href="thankyou.html";
         return;
       }
-      alert("送出失敗，請稍後再試。\\n原因："+(err&&err.message?err.message:err));
+      alert("送出失敗，請稍後再試。\n原因："+(err&&err.message?err.message:err));
     })
     .finally(function(){ setSubmitting(false); showLoading(false); });
   },{once:true});
-})();
-
-// === 浮動社群按鈕：拖曳移動與位置保存（本地儲存） ===
-(function(){
-  var fab=document.getElementById('socialFab');
-  var handle=document.getElementById('fabHandle');
-  if(!fab||!handle) return;
-
-  var startX=0,startY=0,origX=0,origY=0, dragging=false;
-
-  function setPos(x,y){
-    fab.style.right='auto'; fab.style.bottom='auto';
-    fab.style.left=x+'px'; fab.style.top=y+'px';
-  }
-
-  // 載入儲存位置
-  try{
-    var pos=JSON.parse(localStorage.getItem('socialFabPos')||'null');
-    if(pos && typeof pos.x==='number' && typeof pos.y==='number'){ setPos(pos.x,pos.y); }
-  }catch(e){}
-
-  function onStart(e){
-    dragging=true;
-    var rect=fab.getBoundingClientRect();
-    origX=rect.left; origY=rect.top;
-    if(e.touches && e.touches[0]){ startX=e.touches[0].clientX; startY=e.touches[0].clientY; }
-    else{ startX=e.clientX; startY=e.clientY; }
-    e.preventDefault();
-  }
-  function onMove(e){
-    if(!dragging) return;
-    var cx=e.touches && e.touches[0]? e.touches[0].clientX : e.clientX;
-    var cy=e.touches && e.touches[0]? e.touches[0].clientY : e.clientY;
-    var x=origX+(cx-startX), y=origY+(cy-startY);
-    // 邊界限制
-    var vw=window.innerWidth, vh=window.innerHeight;
-    var w=fab.offsetWidth, h=fab.offsetHeight;
-    x=Math.max(6, Math.min(x, vw-w-6));
-    y=Math.max(6, Math.min(y, vh-h-6));
-    setPos(x,y);
-  }
-  function onEnd(){
-    if(!dragging) return;
-    dragging=false;
-    var rect=fab.getBoundingClientRect();
-    localStorage.setItem('socialFabPos', JSON.stringify({x:rect.left, y:rect.top}));
-  }
-
-  handle.addEventListener('mousedown', onStart);
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('mouseup', onEnd);
-
-  handle.addEventListener('touchstart', onStart, {passive:false});
-  window.addEventListener('touchmove', onMove, {passive:false});
-  window.addEventListener('touchend', onEnd);
 })();
 </script>
 </body>
