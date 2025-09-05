@@ -448,5 +448,69 @@ form.addEventListener("submit", function (e) {
   });
 }, { once: true });
 
+    // Safe submit interception for Netlify Function
+(function() {
+  function setSubmitting(disabled) {
+    try {
+      var btn = document.querySelector('button[type="submit"], input[type="submit"]');
+      if (btn) { btn.disabled = !!disabled; }
+    } catch (e) {}
+  }
+  function showLoading(show) {
+    try {
+      var el = document.querySelector('#loading,#spinner,.loading');
+      if (el) { el.style.display = show ? 'block' : 'none'; }
+    } catch (e) {}
+  }
+  function onReady(fn){ 
+    if(document.readyState!=='loading'){fn();} 
+    else {document.addEventListener('DOMContentLoaded',fn);} 
+  }
+
+  onReady(function(){
+    var form = document.querySelector('form');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      var formData = new FormData(form);
+      var payload = {};
+      formData.forEach((v,k)=>{
+        if (payload[k] !== undefined) {
+          // handle multiple values (checkboxes)
+          payload[k] = [].concat(payload[k], v);
+        } else {
+          payload[k] = v;
+        }
+      });
+      payload.userAgent = navigator.userAgent;
+      payload.submittedAt = new Date().toISOString();
+
+      setSubmitting(true);
+      showLoading(true);
+
+      fetch('/.netlify/functions/submit', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      .then(function(res){
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(){
+        window.location.href = 'thankyou.html';
+      })
+      .catch(function(err){
+        alert('送出失敗，請稍後再試。\n原因：' + (err && err.message ? err.message : err));
+      })
+      .finally(function(){
+        setSubmitting(false);
+        showLoading(false);
+      });
+    }, { once: true });
+  });
+})();
 </script></body>
 </html>
