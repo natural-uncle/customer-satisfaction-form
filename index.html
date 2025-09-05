@@ -124,7 +124,6 @@ body.dark .footer{color:#aaa}
     </div>
 
     <button type="submit">送出表單</button>
-    <div class="thankyou" aria-live="polite">✅ 感謝您填寫調查表！即將跳轉...</div>
   </form>
 
   <div class="contact">
@@ -205,8 +204,7 @@ body.dark .footer{color:#aaa}
       throw new Error("HTTP "+res.status+(txt?(": "+txt):""));
     })
     .then(function(){
-      thankyou.style.display="block";
-      setTimeout(function(){ window.location.href="thankyou.html"; }, 300);
+  window.location.href="thankyou.html";
     })
     .catch(function(err){
       // 即使格式異常也可選擇前往完成頁，避免「成功寄信但前端報錯」
