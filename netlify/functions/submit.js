@@ -1,4 +1,5 @@
-// Netlify Function: submit.js (robust parser + dynamic email rows with labelMap)
+// netlify/functions/submit.js
+// Final version: robust parsing + ordered Chinese labels + JSON responses
 // Env vars required: BREVO_API_KEY, TO_EMAIL, FROM_EMAIL
 // Optional: SITE_NAME
 
@@ -7,11 +8,12 @@ export default async (req, context) => {
     if (req.method !== "POST") {
       return new Response(JSON.stringify({ error: "Method Not Allowed" }), {
         status: 405,
-        headers: { "content-type": "application/json" },
+        headers: { "content-type": "application/json; charset=utf-8" },
       });
     }
 
-    const ct = req.headers.get("content-type") || "";
+    // ---- Parse body safely (JSON / urlencoded / multipart) ----
+    const ct = (req.headers.get("content-type") || "").toLowerCase();
     let data = {};
     try {
       if (ct.includes("application/json")) {
@@ -33,6 +35,7 @@ export default async (req, context) => {
       catch { data = Object.fromEntries(new URLSearchParams(text)); }
     }
 
+    // ---- Env & subject ----
     const siteName = process.env.SITE_NAME || "顧客滿意度調查";
     const toEmail  = process.env.TO_EMAIL;
     const fromEmail= process.env.FROM_EMAIL;
@@ -41,13 +44,14 @@ export default async (req, context) => {
     if (!apiKey || !toEmail || !fromEmail) {
       return new Response(JSON.stringify({
         error: "Missing environment variables. Please configure BREVO_API_KEY, TO_EMAIL, FROM_EMAIL."
-      }), { status: 500, headers: { "content-type": "application/json" } });
+      }), { status: 500, headers: { "content-type": "application/json; charset=utf-8" } });
     }
 
-    const customerName = data.customer_name || data.name || data.line || data["姓名"] || "";
+    const customerName =
+      data.customer_name || data.name || data.line || data["姓名"] || "";
     const subject = `【${siteName}】新問卷回覆：${customerName || "未填姓名"}`;
 
-    // 👉 欄位中文名稱對照表
+    // ---- Label map (Chinese) & output order ----
     const labelMap = {
       customer_name: "姓名/LINE",
       q1: "服務滿意度",
@@ -56,37 +60,65 @@ export default async (req, context) => {
       q3: "技師專業度 (1-5)",
       q4: "價格合理度 (1-10)",
       q5: "會否推薦",
-      q6: "其他建議"
+      q6: "其他建議",
     };
 
-    // 動態生成表格
-    const skipKeys = new Set(["bot-field","form-name","g-recaptcha-response","submit","userAgent","submittedAt"]);
-    const rows = Object.entries(data)
-      .filter(([k,v]) => !skipKeys.has(k))
-      .map(([k,v]) => {
-        const key = labelMap[k] || k; // 用對照表轉換
+    const skipKeys = new Set([
+      "bot-field",
+      "form-name",
+      "g-recaptcha-response",
+      "submit",
+      "userAgent",
+      "submittedAt",
+    ]);
+
+    // 先依 labelMap 的順序輸出已存在的欄位
+    let orderedPairs = Object.keys(labelMap)
+      .filter((k) => k in data)
+      .map((k) => [k, data[k]]);
+
+    // 再補上未在 labelMap 但有送來的欄位（不含 skip）
+    for (const [k, v] of Object.entries(data)) {
+      if (skipKeys.has(k)) continue;
+      if (!(k in labelMap) && !orderedPairs.some(([ok]) => ok === k)) {
+        orderedPairs.push([k, v]);
+      }
+    }
+
+    const rows = orderedPairs
+      .filter(([k]) => !skipKeys.has(k))
+      .map(([k, v]) => {
+        const key = labelMap[k] || k;
         const val = Array.isArray(v) ? v.join(", ") : String(v ?? "");
-        return `<tr><th align="left" style="white-space:nowrap">${key}</th><td>${val.replace(/\n/g,"<br/>") || "(未填)"}</td></tr>`;
+        return `<tr><th align="left" style="white-space:nowrap">${escapeHtml(
+          key
+        )}</th><td>${escapeHtml(val).replace(/\n/g, "<br/>") || "(未填)"}</td></tr>`;
       })
       .join("\n");
 
+    const submittedAt = data.submittedAt || new Date().toISOString();
+    const userAgent = data.userAgent || "";
+
     const htmlContent = `
       <div style="font-family:Arial,Helvetica,sans-serif;line-height:1.6">
-        <h2>${subject}</h2>
-        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse">
+        <h2>${escapeHtml(subject)}</h2>
+        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;max-width:760px">
           ${rows || '<tr><td>(沒有欄位資料)</td></tr>'}
-          <tr><th align="left">送出時間</th><td>${data.submittedAt || new Date().toISOString()}</td></tr>
-          <tr><th align="left">User-Agent</th><td>${data.userAgent || ""}</td></tr>
+          <tr><th align="left">送出時間</th><td>${escapeHtml(submittedAt)}</td></tr>
+          <tr><th align="left">User-Agent</th><td>${escapeHtml(userAgent)}</td></tr>
         </table>
-        <pre style="margin-top:12px;background:#f6f8fa;padding:12px;border-radius:6px;overflow:auto">${JSON.stringify(data, null, 2)}</pre>
+        <pre style="margin-top:12px;background:#f6f8fa;padding:12px;border-radius:6px;overflow:auto">${escapeHtml(
+          JSON.stringify(data, null, 2)
+        )}</pre>
       </div>
     `;
 
+    // ---- Send via Brevo SMTP API ----
     const res = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
         "api-key": apiKey,
-        "accept": "application/json",
+        accept: "application/json",
         "content-type": "application/json",
       },
       body: JSON.stringify({
@@ -98,21 +130,36 @@ export default async (req, context) => {
     });
 
     if (!res.ok) {
-      const errText = await res.text();
-      return new Response(JSON.stringify({ error: "Brevo API error", details: errText }), {
-        status: 502,
-        headers: { "content-type": "application/json" },
-      });
+      const errText = await res.text().catch(() => "");
+      return new Response(
+        JSON.stringify({ error: "Brevo API error", details: errText }),
+        {
+          status: 502,
+          headers: { "content-type": "application/json; charset=utf-8" },
+        }
+      );
     }
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": "no-store",
+      },
     });
   } catch (err) {
     return new Response(JSON.stringify({ error: String(err) }), {
       status: 500,
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json; charset=utf-8" },
     });
   }
 };
+
+// --- helper: basic HTML escape to avoid breaking table/content ---
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
