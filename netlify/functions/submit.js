@@ -1,4 +1,4 @@
-// Netlify Function: submit.js (robust parser + dynamic email rows)
+// Netlify Function: submit.js (robust parser + dynamic email rows with labelMap)
 // Env vars required: BREVO_API_KEY, TO_EMAIL, FROM_EMAIL
 // Optional: SITE_NAME
 
@@ -47,12 +47,24 @@ export default async (req, context) => {
     const customerName = data.customer_name || data.name || data.line || data["姓名"] || "";
     const subject = `【${siteName}】新問卷回覆：${customerName || "未填姓名"}`;
 
+    // 👉 欄位中文名稱對照表
+    const labelMap = {
+      customer_name: "姓名/LINE",
+      q1: "服務滿意度",
+      q2: "清潔品質",
+      q2_extra: "清潔品質備註",
+      q3: "技師專業度 (1-5)",
+      q4: "價格合理度 (1-10)",
+      q5: "會否推薦",
+      q6: "其他建議"
+    };
+
     // 動態生成表格
     const skipKeys = new Set(["bot-field","form-name","g-recaptcha-response","submit","userAgent","submittedAt"]);
     const rows = Object.entries(data)
       .filter(([k,v]) => !skipKeys.has(k))
       .map(([k,v]) => {
-        const key = String(k);
+        const key = labelMap[k] || k; // 用對照表轉換
         const val = Array.isArray(v) ? v.join(", ") : String(v ?? "");
         return `<tr><th align="left" style="white-space:nowrap">${key}</th><td>${val.replace(/\n/g,"<br/>") || "(未填)"}</td></tr>`;
       })
