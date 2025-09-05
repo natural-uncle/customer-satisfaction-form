@@ -6,7 +6,7 @@
 <title>自然大叔清洗服務｜顧客滿意度調查</title>
 
 <style>
-/* === 主要樣式（保留你原本的設計） === */
+/* === 主要樣式 === */
 body{font-family:"Microsoft JhengHei",sans-serif;background:#f9faf9;color:#333;margin:0}
 .container{max-width:800px;margin:20px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .logo{text-align:center;margin-bottom:20px}
@@ -20,11 +20,13 @@ textarea,input[type=text]{width:100%;box-sizing:border-box;padding:14px;border:1
 input[type=range]{width:100%}
 button{background:#3a6d4f;color:#fff;border:0;padding:14px 20px;font-size:1.1rem;border-radius:8px;cursor:pointer;display:block;margin:0 auto}
 button:hover{background:#2d523c}
-.contact{margin-top:30px;padding:20px;background:#f1f9f1;border-radius:8px;font-size:1rem;text-align:center}
+.contact{margin-top:30px;padding:20px;background:#f1f9f1;border-radius:12px;font-size:1rem;text-align:center}
 .footer{text-align:center;margin-top:40px;font-size:.95rem;color:#777}
 .progress-container{background:#e0e0e0;border-radius:20px;margin:20px 0;height:20px;width:100%;overflow:hidden}
 .progress-bar{height:100%;background:#3a6d4f;width:0%;transition:width .3s ease}
-.theme-toggle{position:fixed;top:15px;right:15px;background:#3a6d4f;color:#fff;border:0;border-radius:50%;width:42px;height:42px;cursor:pointer;font-size:18px}
+
+/* === 深淺色主題 === */
+
 body.dark{background:#121212;color:#eee}
 body.dark .container{background:#1e1e1e;box-shadow:0 4px 12px rgba(0,0,0,.6)}
 body.dark h2,body.dark label{color:#9ad0b1}
@@ -34,15 +36,50 @@ body.dark button{background:#4da67a}
 body.dark button:hover{background:#3b7e5b}
 body.dark .progress-container{background:#333}
 body.dark .progress-bar{background:#4da67a}
-body.dark .contact{background:#2a2a2a;color:#ccc}
+body.dark .contact{background:#202020;color:#ccc}
 body.dark .footer{color:#aaa}
+/* === 社群品牌按鈕 === */
+.social-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;font-weight:700;text-decoration:none;box-shadow:0 6px 16px rgba(0,0,0,.12);transition:transform .15s ease,filter .15s ease}
+.btn svg{width:18px;height:18px;flex:0 0 auto}
+.btn-line{background:linear-gradient(180deg,#07d15f,#06c755);color:#fff}
+.btn-line:hover{transform:translateY(-1px);filter:brightness(1.02)}
+.btn-fb{background:linear-gradient(180deg,#2a86ff,#1877f2);color:#fff}
+.btn-fb:hover{transform:translateY(-1px);filter:brightness(1.02)}
+.btn .label{letter-spacing:.2px;font-size:.95rem}
+
+/* 行動裝置調整 */
+
 @media (max-width:600px){
   .container{margin:10px;padding:18px;border-radius:10px}
   h2{font-size:1.5rem}
   p,label{font-size:1.05rem;line-height:1.6}
   input[type=text],textarea{font-size:1.05rem;padding:14px}
   button{width:100%;padding:16px;font-size:1.15rem}
+
+  /* 社群按鈕手機版調整：垂直堆疊，滿版但不超出容器 */
+  .social-buttons{flex-direction:column;align-items:stretch;gap:12px;margin-top:16px}
+  .social-buttons .btn{display:block;width:100%;max-width:100%;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
+  .contact{padding-bottom:24px}
 }
+
+  .social-buttons .btn{display:block;width:100%;max-width:420px;margin:0 auto;padding:12px 16px}
+  /* gap 的相容性備援，在舊版 iOS Safari 上維持上下間距 */
+  .social-buttons .btn + .btn{margin-top:12px}
+  /* 與底部元素保持距離，避免貼齊 */
+  .contact{padding-bottom:24px}
+
+}
+  h2{font-size:1.5rem}
+  p,label{font-size:1.05rem;line-height:1.6}
+  input[type=text],textarea{font-size:1.05rem;padding:14px}
+  button{width:100%;padding:16px;font-size:1.15rem}
+  .social-buttons{flex-direction:column;align-items:center}
+  .social-buttons .btn{width:auto;min-width:200px;justify-content:center;padding:10px 14px;font-size:.95rem}
+  
+}
+
+/* Loading Backdrop */
 #loadingBackdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.4);z-index:9999}
 #loadingBackdrop.show{display:flex}
 .loading-card{background:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
@@ -51,7 +88,8 @@ body.dark .footer{color:#aaa}
 </style>
 </head>
 <body>
-<button class="theme-toggle" id="themeToggle">🌙</button>
+
+
 
 <div class="container">
   <div class="logo"><img src="ChatGPT.png" alt="自然大叔清洗服務 顧客滿意度調查"/></div>
@@ -128,16 +166,27 @@ body.dark .footer{color:#aaa}
 
   <div class="contact">
     <h3>📱 聯絡我們｜自然大叔</h3>
-    <a class="btn btn-line" href="https://lin.ee/OHk6Rn7">🟢 LINE 官方帳號</a>
-    <a class="btn btn-fb" href="https://www.facebook.com/naturaluncle">🔵 Facebook 粉絲專頁</a>
+
+    <div class="social-buttons" role="group" aria-label="社群連結">
+      <a class="btn btn-line" href="https://lin.ee/OHk6Rn7" target="_blank" rel="noopener noreferrer" aria-label="加入 LINE 官方帳號">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.667 3H4.333A3.333 3.333 0 0 0 1 6.333v7.334A3.333 3.333 0 0 0 4.333 17H7l3.478 3.2c.512.47 1.355.095 1.355-.589V17h7.834A3.333 3.333 0 0 0 23 13.667V6.333A3.333 3.333 0 0 0 19.667 3z"/></svg>
+        <span class="label">加入 LINE</span>
+      </a>
+
+      <a class="btn btn-fb" href="https://www.facebook.com/naturaluncle" target="_blank" rel="noopener noreferrer" aria-label="前往 Facebook 粉絲專頁">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22 12.07C22 6.49 17.52 2 11.93 2S2 6.49 2 12.07c0 5 3.66 9.15 8.44 9.93v-7.02H7.9V12.1h2.54V9.86c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.91h2.78l-.44 2.88h-2.34V22c4.78-.78 8.44-4.93 8.44-9.93z"/></svg>
+        <span class="label">追蹤 Facebook</span>
+      </a>
+    </div>
   </div>
+
   <div class="footer">© 2025 自然大叔｜專業家電清洗服務</div>
 </div>
 
 <div id="loadingBackdrop"><div class="loading-card"><span class="spinner"></span>資料送出中，請稍候…</div></div>
 
 <script>
-// 進度條
+/* === 進度條 === */
 (function(){
   var form=document.getElementById("surveyForm");
   var progressBar=document.getElementById("progressBar");
@@ -151,72 +200,3 @@ body.dark .footer{color:#aaa}
   form.addEventListener("input",update);
 })();
 
-// 主題切換
-(function(){
-  var btn=document.getElementById("themeToggle");
-  function setTheme(t){document.body.classList.toggle("dark",t==="dark");btn.textContent=t==="dark"?"☀️":"🌙";localStorage.setItem("theme",t);}
-  btn.addEventListener("click",function(){setTheme(document.body.classList.contains("dark")?"light":"dark");});
-  var saved=localStorage.getItem("theme");
-  setTheme(saved?saved:(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
-})();
-
-// 提交（fetch → /api/submit；任何 2xx 視為成功）
-(function(){
-  var form=document.getElementById("surveyForm");
-  var thankyou=document.querySelector(".thankyou");
-  var backdrop=document.getElementById("loadingBackdrop");
-  var submitBtn=form.querySelector('[type="submit"]');
-
-  function showLoading(b){backdrop.classList[b?"add":"remove"]("show");}
-  function setSubmitting(b){
-    if(!submitBtn) return;
-    submitBtn.disabled=!!b;
-    if(b){
-      if(!submitBtn.dataset.origtxt) submitBtn.dataset.origtxt=submitBtn.textContent.trim();
-      submitBtn.textContent="送出中…";
-    }else{
-      if(submitBtn.dataset.origtxt) submitBtn.textContent=submitBtn.dataset.origtxt;
-    }
-  }
-
-  form.addEventListener("submit",function(e){
-    e.preventDefault();
-
-    var fd=new FormData(form);
-    var payload={};
-    fd.forEach(function(v,k){
-      if(payload[k]!==undefined) payload[k]=[].concat(payload[k],v);
-      else payload[k]=v;
-    });
-    payload.userAgent=navigator.userAgent;
-    payload.submittedAt=new Date().toISOString();
-
-    setSubmitting(true); showLoading(true);
-
-    fetch("/api/submit",{
-      method:"POST",
-      headers:{ "content-type":"application/json" },
-      body:JSON.stringify(payload)
-    })
-    .then(async function(res){
-      if(res.ok) return {ok:true};
-      var txt=""; try{ txt=await res.text(); }catch(e){}
-      throw new Error("HTTP "+res.status+(txt?(": "+txt):""));
-    })
-    .then(function(){
-  window.location.href="thankyou.html";
-    })
-    .catch(function(err){
-      // 即使格式異常也可選擇前往完成頁，避免「成功寄信但前端報錯」
-      if (confirm("送出可能成功，但回應格式異常。\n要前往完成頁嗎？\n\n詳細："+(err&&err.message?err.message:err))) {
-        window.location.href="thankyou.html";
-        return;
-      }
-      alert("送出失敗，請稍後再試。\n原因："+(err&&err.message?err.message:err));
-    })
-    .finally(function(){ setSubmitting(false); showLoading(false); });
-  },{once:true});
-})();
-</script>
-</body>
-</html>
