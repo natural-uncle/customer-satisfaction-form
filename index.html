@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>自然大叔清洗服務｜顧客滿意度調查</title>
 
+  <!-- 新增 favicon -->
+  <link rel="icon" href="https://res.cloudinary.com/dijzndzw2/image/upload/v1757173258/logo-3_jznrtv.png" type="image/png"/>
+
   <style>
     /* === 主要樣式 === */
     body{font-family:"Microsoft JhengHei",sans-serif;background:#f9faf9;color:#333;margin:0}
@@ -179,7 +182,6 @@
         var touchedRange=false;
         form.querySelectorAll("input,textarea").forEach(function(el){
           if(el.name==="q4" && el.type==="range"){
-            // 只有使用者把滑桿從預設值 5 移動時才算有填答
             if(el.value!=="5") touchedRange=true;
             return;
           }
