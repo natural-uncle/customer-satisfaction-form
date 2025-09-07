@@ -6,7 +6,7 @@
   <title>自然大叔清洗服務｜顧客滿意度調查</title>
 
   <!-- 新增 favicon -->
-  <link rel="icon" href="https://res.cloudinary.com/dijzndzw2/image/upload/v1757176751/logo-3_hddq08.png" type="image/png"/>
+  <link rel="icon" href="https://res.cloudinary.com/dijzndzw2/image/upload/v1757173258/logo-3_jznrtv.png" type="image/png"/>
 
   <style>
     /* === 主要樣式 === */
@@ -52,20 +52,27 @@
     .btn .label{letter-spacing:.2px;font-size:.95rem}
 
     /* === 行動裝置調整 === */
-    @media (max-width:600px){
-      .container{margin:10px;padding:18px;border-radius:10px}
-      h2{font-size:1rem}
-      p,label{font-size:1.05rem;line-height:1.6}
-      input[type=text],textarea{font-size:1.05rem;padding:14px}
-      button{width:100%;padding:16px;font-size:1.15rem}
+@media (max-width:600px){
+  .container{margin:10px;padding:18px;border-radius:10px}
 
-      /* 社群按鈕手機版：滿版不超出容器 */
-      .social-buttons{flex-direction:column;align-items:stretch;gap:12px;margin-top:16px}
-      .social-buttons .btn{display:block;width:100%;max-width:none;box-sizing:border-box;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
-      .contact{padding-bottom:24px}
-    }
+  /* 標題放大一點，避免太小 */
+  h2{font-size:1.4rem}
 
-    /* Loading Backdrop */
+  /* 內文縮小一點，避免比標題大 */
+  p{font-size:0.95rem;line-height:1.6}
+
+  /* 其餘表單排版微調以符合整體比例 */
+  label{font-size:1rem;line-height:1.6}
+  input[type=text],textarea{font-size:1rem;padding:14px}
+  button{width:100%;padding:16px;font-size:1.1rem}
+
+  /* 社群按鈕手機版：滿版不超出容器 */
+  .social-buttons{flex-direction:column;align-items:stretch;gap:12px;margin-top:16px}
+  .social-buttons .btn{display:block;width:100%;max-width:none;box-sizing:border-box;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
+  .contact{padding-bottom:24px}
+}
+
+/* Loading Backdrop */
     #loadingBackdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.4);z-index:9999}
     #loadingBackdrop.show{display:flex}
     .loading-card{background:#fff;padding:16px 20px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
