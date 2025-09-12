@@ -6,7 +6,7 @@
   <title>自然大叔清洗服務｜顧客滿意度調查</title>
 
   <!-- 新增 favicon -->
-  <link rel="icon" href="https://res.cloudinary.com/dijzndzw2/image/upload/v1757176751/logo-3_hddq08.png" type="image/png"/>
+  <link rel="icon" href="https://res.cloudinary.com/dijzndzw2/image/upload/v1757173258/logo-3_jznrtv.png" type="image/png"/>
 
   <style>
     /* === 主要樣式 === */
@@ -49,24 +49,18 @@
     .btn-line:hover{transform:translateY(-1px);filter:brightness(1.02)}
     .btn-fb{background:linear-gradient(180deg,#2a86ff,#1877f2);color:#fff}
     .btn-fb:hover{transform:translateY(-1px);filter:brightness(1.02)}
+    .btn-web{background:linear-gradient(180deg,#ff9900,#ff6600);color:#fff}
+    .btn-web:hover{transform:translateY(-1px);filter:brightness(1.05)}
     .btn .label{letter-spacing:.2px;font-size:.95rem}
 
     /* === 行動裝置調整 === */
 @media (max-width:600px){
   .container{margin:10px;padding:18px;border-radius:10px}
-
-  /* 標題放大一點，避免太小 */
   h2{font-size:1.4rem}
-
-  /* 內文縮小一點，避免比標題大 */
   p{font-size:0.75rem;line-height:1.6}
-
-  /* 其餘表單排版微調以符合整體比例 */
   label{font-size:1rem;line-height:1.6}
   input[type=text],textarea{font-size:1rem;padding:14px}
   button{width:100%;padding:16px;font-size:1.1rem}
-
-  /* 社群按鈕手機版：滿版不超出容器 */
   .social-buttons{flex-direction:column;align-items:stretch;gap:12px;margin-top:16px}
   .social-buttons .btn{display:block;width:100%;max-width:none;box-sizing:border-box;margin:0;padding:14px 16px;font-size:1rem;justify-content:center}
   .contact{padding-bottom:24px}
@@ -93,7 +87,7 @@
 
     <form id="surveyForm" method="POST" action="/api/submit" data-redirect="thankyou">
       <div class="form-group">
-        <label>👤 請留下您的姓名或 LINE ID（選填）</label>
+        <label>👤 請留下您的姓名或 LINE ID</label>
         <input type="text" name="customer_name" placeholder="輸入姓名或 LINE ID"/>
       </div>
 
@@ -166,6 +160,13 @@
           <span class="label">加入 LINE</span>
         </a>
 
+        <!-- 新的官方網站按鈕 -->
+        <a class="btn btn-web" href="https://uncleofficialwebsite.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="前往自然大叔官方網站">
+          <img src="https://res.cloudinary.com/dijzndzw2/image/upload/v1757176751/logo-3_hddq08.png" alt="自然大叔 LOGO" style="width:18px;height:18px;flex:0 0 auto"/>
+          <span class="label">官方網站</span>
+        </a>
+
+        <!-- 保留 Facebook 按鈕 -->
         <a class="btn btn-fb" href="https://www.facebook.com/naturaluncle" target="_blank" rel="noopener noreferrer" aria-label="前往 Facebook 粉絲專頁">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22 12.07C22 6.49 17.52 2 11.93 2S2 6.49 2 12.07c0 5 3.66 9.15 8.44 9.93v-7.02H7.9V12.1h2.54V9.86c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.91h2.78l-.44 2.88h-2.34V22c4.78-.78 8.44-4.93 8.44-9.93z"/></svg>
           <span class="label">追蹤 Facebook</span>
